@@ -5,10 +5,16 @@ import ambientLigth from "../../components/ligths/ambientLigth.js"
 import directionalLight from "../../components/ligths/directionalLight.js";
 import Cube from "../../components/shapes/cube.js";
 import Plane from "../../components/shapes/plane.js";
+import Terrain from '../../components/shapes/terrain.js'
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import { Vector3 } from 'three';
-
+import SimplexNoise from 'https://cdn.jsdelivr.net/npm/simplex-noise@3.0.0/dist/esm/simplex-noise.js';
+import terrainPreload from '../../tools/terrainPreload.js'
+import * as CANNON from 'cannon-es';
 function init() {
+
+    const world = new CANNON.World();
+    world.gravity.set(0, -9.82, 0);
 
     let controls;
     const isMobile = document.querySelector("#controller")
@@ -28,37 +34,34 @@ function init() {
     const direction = new Vector3();
     let keys = {};
 
-    const Player = new Cube(1, 0xf00f0f0, 0, 0, "../../../public/textures/wood.jpg").getMesh();
+    const Player = new Cube([0, 2, 0], "../../../public/textures/wood.jpg").getMesh();
     scene.add(Player);
+/*
+    const noise = new SimplexNoise();
 
-    const cube2 = new Cube(2, 0x00ff00, 0, 0, "../../../public/textures/images.jfif").getMesh();
-    scene.add(cube2);
+    function generateMinecraftTerrain(width, height, scale) {
+        const terrain = [];
 
-    const cube3 = new Cube(3, 0x00ff00, 0, 0, "../../../public/textures/images.jfif").getMesh();
-    scene.add(cube3);
+        for (let x = 0; x < width; x++) {
+            for (let y = 0; y < height; y++) {
+                let z = Math.floor(noise.noise2D(x / scale, y / scale) * 10);
 
-    const cube4 = new Cube(2, 0x00ff00, 1, 0, "../../../public/textures/images.jfif").getMesh();
-    scene.add(cube4);
+                z = Math.max(0, z);
 
-    const planeFloor = new Plane(0, 0, 0, .5, "../../../public/textures/pared.png").getMesh();
-    scene.add(planeFloor);
+                terrain.push([x, z, y]);
+            }
+        }
+        return terrain;
+    }
 
-    const paredAdelante = new Plane(0, 15, -15, 0, "../../../public/textures/pared.png").getMesh();
-    scene.add(paredAdelante)
-
-    const paredAtras = new Plane(0, 15, 15, 0, "../../../public/textures/pared.png").getMesh();
-    scene.add(paredAtras)
-
-    const paredIzquierda = new Plane(15, 15, 0, 0, "../../../public/textures/pared.png", .5).getMesh();
-    scene.add(paredIzquierda)
-
-    const paredDerecha = new Plane(-15, 15, 0, 0, "../../../public/textures/pared.png", .5).getMesh();
-    scene.add(paredDerecha);
+    const terrain = generateMinecraftTerrain(100, 100, 100);
+*/
+    const floor = new Terrain(terrainPreload,"../../../public/textures/g_5.png" , world).getMesh();
+    scene.add(floor)
 
     scene.add(ambientLigth);
     scene.add(directionalLight);
-    camera.position.set(0, 1, 0);
-
+    camera.position.set(0, 4, 0);
 
     directionalLight.position.set(-10, 10, 10);
 
@@ -96,10 +99,11 @@ function init() {
     // End controls mobile
 
     const animate = () => {
+
         camera.getWorldDirection(direction);
         direction.y = 0;
         direction.normalize();
-        const speedPositive = keys['ShiftLeft'] ? 0.07 : 0.04;
+        const speedPositive = keys['ShiftLeft'] ? 0.6 : 0.04;
         if (keys['KeyW']) {
             Player.position.addScaledVector(direction, speedPositive);
             camera.position.addScaledVector(direction, speedPositive);
@@ -126,6 +130,7 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    init();
+
+    init()
 })
 

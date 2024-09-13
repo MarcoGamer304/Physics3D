@@ -74,8 +74,6 @@ function init() {
         camera.updateProjectionMatrix();
     }
 
-
-
     const animate = () => {
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
