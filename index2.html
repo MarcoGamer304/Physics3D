@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+  <link rel="stylesheet" href="./src/styles/style.css">
+  <link rel="stylesheet" href="./src/styles/crucetas.css">
+</head>
+
+<body>
+
+  <div id="container3D"></div>
+
+  <div
+    style="position: relative; z-index: 2; color: #8e2d2d; display: flex; justify-items: center; align-items: center;padding: 1rem; font-size: 2rem;">
+
+    <button><a href="./menu2.html">Ir a Menu 2</a></button>
+    <button><a href="./level2.html"> level2 </a></button>
+    <button><a href="./index.html">index</a></button>
+  </div>
+
+
+  <div id="controller">
+    <div class="directional-pad">
+      <div class="button up"></div>
+      <div class="row">
+        <div class="button left"></div>
+        <div class="button center"></div>
+        <div class="button right"></div>
+      </div>
+      <div class="button down"></div>
+    </div>
+    <div class="camera-pad">
+      <div class="button up"></div>
+      <div class="row">
+        <div class="button left"></div>
+        <div class="button center"></div>
+        <div class="button right"></div>
+      </div>
+      <div class="button down"></div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/scenes/levels/index.js"></script>
+</body>
+
+</html>
