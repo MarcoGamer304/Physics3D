@@ -8,9 +8,12 @@ import Plane from "../../components/shapes/plane.js";
 import Terrain from '../../components/shapes/terrain.js'
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import { Vector3 } from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import SimplexNoise from 'https://cdn.jsdelivr.net/npm/simplex-noise@3.0.0/dist/esm/simplex-noise.js';
 import terrainPreload from '../../tools/terrainPreload.js'
 import * as CANNON from 'cannon-es';
+import CannonDebugger from 'cannon-es-debugger';
+
 function init() {
 
     const world = new CANNON.World();
@@ -28,40 +31,47 @@ function init() {
         controls = new PointerLockControls(camera, renderer.domElement);
         controls.lock();
     } else if (detectDeviceType() === 'Mobile') {
+        controls = new OrbitControls( camera, renderer.domElement );
         isMobile.style.zIndex = "2";
     };
 
     const direction = new Vector3();
     let keys = {};
+    let canJump = true; 
+    let jumpSpeed = 6; 
+    let isJumping = false;
 
-    const Player = new Cube([0, 2, 0], "../../../public/textures/wood.jpg").getMesh();
-    scene.add(Player);
-/*
-    const noise = new SimplexNoise();
+    const playerMesh = new Cube([40, 30, 30], "../../../public/textures/wood.jpg").getMesh();
+    scene.add(playerMesh);
 
-    function generateMinecraftTerrain(width, height, scale) {
-        const terrain = [];
+    const playerBody = new CANNON.Body({
+        mass: 1,
+        position: new CANNON.Vec3(40, 30, 30),
+        shape: new CANNON.Box(new CANNON.Vec3(0.5, 0.5, 0.5)),
+    });
+    world.addBody(playerBody);
 
-        for (let x = 0; x < width; x++) {
-            for (let y = 0; y < height; y++) {
-                let z = Math.floor(noise.noise2D(x / scale, y / scale) * 10);
+    const planeFloor = new Plane([49.5, 0.5, 51], .5, "../../../public/textures/dirt.png").getMesh();
+    scene.add(planeFloor);
 
-                z = Math.max(0, z);
+    const terrainMesh = new Terrain(terrainPreload, "../../../public/textures/g_5.png", world).getMesh();
+    scene.add(terrainMesh);
 
-                terrain.push([x, z, y]);
-            }
-        }
-        return terrain;
-    }
+    const terrainShape = new CANNON.Box(new CANNON.Vec3(50, 0.5, 48.5)); //size
+    const terrainBody = new CANNON.Body({
+        mass: 0, 
+        position: new CANNON.Vec3(50, 0.5, 51), // Position
+        shape: terrainShape,
+    });
+    world.addBody(terrainBody);
 
-    const terrain = generateMinecraftTerrain(100, 100, 100);
-*/
-    const floor = new Terrain(terrainPreload,"../../../public/textures/g_5.png" , world).getMesh();
-    scene.add(floor)
+    const cannonDebugger = new CannonDebugger(scene, world, {
+        color: 0xffff00, 
+    });
 
     scene.add(ambientLigth);
     scene.add(directionalLight);
-    camera.position.set(0, 4, 0);
+    camera.position.set(40, 3, 30);
 
     directionalLight.position.set(-10, 10, 10);
 
@@ -85,6 +95,10 @@ function init() {
 
     function onKeyDown(event) {
         keys[event.code] = true;
+        if (event.code === 'Space') {
+            playerBody.velocity.y = jumpSpeed; // Apply jump speed
+           
+        }
     }
 
     function onKeyUp(event) {
@@ -92,40 +106,50 @@ function init() {
     }
     // end controls pc
     // controls mobile
-    document.addEventListener('touchstart', () => {
+  /*  document.addEventListener('touchstart', () => {
 
         camera.rotateX(.1)
-    })
+    })*/
     // End controls mobile
-
     const animate = () => {
-
         camera.getWorldDirection(direction);
         direction.y = 0;
         direction.normalize();
-        const speedPositive = keys['ShiftLeft'] ? 0.6 : 0.04;
+
+        const speedPositive = keys['ShiftLeft'] ? 0.2 : 0.08;
         if (keys['KeyW']) {
-            Player.position.addScaledVector(direction, speedPositive);
-            camera.position.addScaledVector(direction, speedPositive);
+            playerBody.position.vadd(direction.multiplyScalar(speedPositive), playerBody.position);
+
         }
         if (keys['KeyS']) {
-            Player.position.addScaledVector(direction, -0.04);
-            camera.position.addScaledVector(direction, -0.04);
+            playerBody.position.vsub(direction.multiplyScalar(0.04), playerBody.position);
         }
         if (keys['KeyA']) {
             const right = new Vector3().crossVectors(direction, new Vector3(0, 1, 0)).normalize();
-            Player.position.addScaledVector(right, -0.04);
-            camera.position.addScaledVector(right, -0.04);
+            playerBody.position.vsub(right.multiplyScalar(0.04), playerBody.position);
         }
         if (keys['KeyD']) {
             const right = new Vector3().crossVectors(direction, new Vector3(0, 1, 0)).normalize();
-            Player.position.addScaledVector(right, 0.04);
-            camera.position.addScaledVector(right, 0.04);
+            playerBody.position.vadd(right.multiplyScalar(0.04), playerBody.position);
         }
+
+
+        world.step(1 / 60);
+
+        if (playerBody.position.y <= 0) {
+            canJump = true;
+        }
+
+        playerMesh.position.copy(playerBody.position);
+        playerMesh.quaternion.copy(playerBody.quaternion);
+        camera.position.copy(playerBody.position);
+        // camera.position.y = (camera.position.y+2)
+       
+        cannonDebugger.update();
 
         renderer.render(scene, camera);
         requestAnimationFrame(animate);
-    }
+    };
     animate();
 }
 

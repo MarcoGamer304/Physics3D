@@ -10,7 +10,7 @@ class Cube {
             texture.minFilter = LinearMipmapLinearFilter;
         });
 
-        const material = new MeshStandardMaterial({ map: texture });
+        const material = new MeshStandardMaterial({ map: texture, wireframe: false });
         this.cube = new Mesh(geometry, material);
         this.cube.position.set(position[0], position[1], position[2])
     }
