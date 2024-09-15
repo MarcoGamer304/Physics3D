@@ -1,5 +1,12 @@
-import { PerspectiveCamera } from "three"; 
+import { PerspectiveCamera } from "three";
+class Camera {
+    constructor(fov, aspect, near, far) {
+        this.camera = new PerspectiveCamera(fov, aspect, near, far);
+    }
+    getCamera() {
+        return this.camera;
+    }
+}
 
-const camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-export default camera;
+export default Camera;

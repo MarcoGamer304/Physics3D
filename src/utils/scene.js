@@ -1,6 +1,11 @@
-import {Scene, Color} from 'three'
+import { Scene, Color, TextureLoader } from 'three'
 
 const scene = new Scene();
-scene.background = new Color(0x87CEEB);
 
+const textureLoader = new TextureLoader();
+const texture = textureLoader.load("../../../public/textures/sky2.png", () => {
+    texture.generateMipmaps = true;
+    texture.minFilter = LinearMipmapLinearFilter;
+})
+scene.background = texture;
 export default scene;

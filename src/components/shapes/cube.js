@@ -1,8 +1,8 @@
 import { BoxGeometry, MeshBasicMaterial, Mesh, MeshStandardMaterial, TextureLoader, LinearMipmapLinearFilter } from 'three'
 
 class Cube {
-    constructor(position=[0,0,0], texturePath = "../../../public/textures/g_5.png") {
-        const geometry = new BoxGeometry(1, 1, 1);
+    constructor(position=[0,0,0], texturePath = "../../../public/textures/g_5.png",altura=1) {
+        const geometry = new BoxGeometry(1, altura, 1);
 
         const textureLoader = new TextureLoader();
         const texture = textureLoader.load(texturePath, (texture) => {
