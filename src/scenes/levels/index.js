@@ -16,6 +16,7 @@ import PlayerColitions from "../../components/shapes/colitions/playerColitions.j
 import thread from "../../essentials/gameLoop/thread.js";
 import { onWindowResize } from "../../tools/resizeWindow.js";
 import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed } from "../../essentials/controlls/controlls.js";
+import { generateTerrain } from "../../tools/generateTerrain.js";
 
 function init() {
 
@@ -33,26 +34,30 @@ function init() {
     world.gravity.set(0, -9.82, 0);
 
     let itemSelect;
-
     let keys = {};
     let canJump = true;
     let jumpSpeed = 6;
     let isJumping = false;
 
-    const playerMesh = new Cube([40, 1, 30], "../../../public/textures/wood.jpg", 1).getMesh();
+    const playerMesh = new Cube([40, 2, 30], "../../../public/textures/wood.jpg", 1).getMesh();
     scene.add(playerMesh);
 
-    const minimap = new Camera(90, 1, 0.01, 500).getCamera();
+    const minimap = new Camera(90, 1, 0.01, 0).getCamera();
     minimap.position.set(playerMesh.position.x, 50, playerMesh.position.z);
     minimap.lookAt(playerMesh.position);
 
     const playerBody = PlayerColitions(world);
 
-    const planeFloor = new Plane([49.5, 0.5, 51], .5, "../../../public/textures/dirt.png").getMesh();
+    const planeFloor = new Plane([150, 0.5, 150], .5, "../../../public/textures/dirt.png").getMesh();
     scene.add(planeFloor);
 
-    const terrainMesh = new Terrain(terrainPreload, "../../../public/textures/g_5.png", world).getMesh();
-    scene.add(terrainMesh);
+    const elements = [planeFloor];
+
+    const asdasd = generateTerrain(300,300)
+    console.log(asdasd)
+    
+    const terrain = new Terrain(asdasd, "../../../public/textures/g_5.png", world, playerBody, 2);
+    scene.add(terrain.getMesh());
 
     scene.add(ambientLigth);
     scene.add(directionalLight);
@@ -61,9 +66,9 @@ function init() {
 
     document.getElementById("container3D").appendChild(renderer.domElement);
 
-    const elements = [planeFloor];
+  
 
-    thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene);
+    thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain);
 
     document.addEventListener('keydown', (event) => {
         onKeyDown(event, keys, playerBody, controls, jumpSpeed);
@@ -81,7 +86,7 @@ function init() {
     document.addEventListener('mouseup',
         (event) => { mouseLeaved(event) }, false
     );
-    
+
     window.addEventListener('resize',
         () => { onWindowResize(renderer, camera); }, false
     );

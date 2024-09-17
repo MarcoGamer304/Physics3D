@@ -1,10 +1,10 @@
 import * as CANNON from 'cannon-es';
 
 function PlaneColitions(world) {
-    const terrainShape = new CANNON.Box(new CANNON.Vec3(50, 0.5, 48.5));
+    const terrainShape = new CANNON.Box(new CANNON.Vec3(150, 0.5, 150));
     const terrainBody = new CANNON.Body({
         mass: 0,
-        position: new CANNON.Vec3(50, 0, 51),
+        position: new CANNON.Vec3(150, 0, 150),
         shape: terrainShape,
     });
     world.addBody(terrainBody);

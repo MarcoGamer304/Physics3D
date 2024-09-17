@@ -1,8 +1,9 @@
 import { Vector3 } from 'three';
 import { moveDirection } from '../controlls/controlls';
+
 const size = 200;
 
-function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene) {
+function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain) {
     const animate = () => {
 
         moveDirection(keys, playerBody, direction, camera);
@@ -12,13 +13,13 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
 
         playerMesh.position.copy(playerBody.position);
         playerMesh.quaternion.copy(playerBody.quaternion);
-
+      
         camera.position.copy(playerBody.position);
         camera.position.y += .5;
 
         minimap.position.set(playerBody.position.x, playerBody.position.y + 40, playerBody.position.z);
         cannonDebugger.update();
-
+        terrain.update();
         renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         renderer.render(scene, camera);
 

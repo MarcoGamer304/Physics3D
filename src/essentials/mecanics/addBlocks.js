@@ -3,7 +3,7 @@ import CubeMesh from "../../components/shapes/cubeMesh.js";
 const newBlocksArray = [];
 
 function AddBlock(world, scene, elements, raycaster, itemSelect) {
-  
+
     const intersects = raycaster.intersectObjects(elements);
 
     if (intersects.length > 0) {
@@ -20,14 +20,19 @@ function AddBlock(world, scene, elements, raycaster, itemSelect) {
         );
 
         if (alreadyExists) {
+            if (y <= 40) {
             const newCubeFix = new CubeMesh([Math.floor(intersect.point.x), y, Math.floor(intersect.point.z)], itemSelect, 1, world).getMesh();
-            scene.add(newCubeFix);
-            elements.push(newCubeFix);
-            newBlocksArray.push([newCubeFix.position.x, newCubeFix.position.y, newCubeFix.position.z]);
+                scene.add(newCubeFix);
+                elements.push(newCubeFix);
+                newBlocksArray.push([newCubeFix.position.x, newCubeFix.position.y, newCubeFix.position.z]);
+            }
+
         } else {
-            scene.add(newCube);
-            elements.push(newCube);
-            newBlocksArray.push([newCube.position.x, newCube.position.y, newCube.position.z]);
+            if (y <= 40) {
+                scene.add(newCube);
+                elements.push(newCube);
+                newBlocksArray.push([newCube.position.x, newCube.position.y, newCube.position.z]);
+            }
         }
     }
 }
