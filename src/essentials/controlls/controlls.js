@@ -8,6 +8,11 @@ let intervalIzq = null;
 let pressDr = false;
 let intervalDr = null;
 
+const controllerDown = document.getElementById("controller-down");
+const controllerUp = document.getElementById("controller-up");
+const controllerLeft = document.getElementById("controller-left");
+const controllerRigth = document.getElementById("controller-rigth");
+
 const diccionario = new Map([
     ['Digit1', "../../../public/textures/g_5.png"],
     ['Digit2', "../../../public/textures/wood.jpg"],
@@ -18,24 +23,30 @@ const diccionario = new Map([
     ['Digit7', "../../../public/textures/leaves.png"]
 ]);
 
-export function moveDirection(keys, playerBody, direction, camera){
+let directionUp = false;
+let directionDawn = false;
+let directionLeft = false;
+let directionRigth = false;
+
+export function moveDirection(keys, playerBody, direction, camera) {
 
     camera.getWorldDirection(direction);
     direction.y = 0;
     direction.normalize();
 
     const speedPositive = keys['ShiftLeft'] ? 0.2 : 0.08;
-    if (keys['KeyW']) {
+
+    if (keys['KeyW'] || directionUp) {
         playerBody.position.vadd(direction.multiplyScalar(speedPositive), playerBody.position);
     }
-    if (keys['KeyS']) {
+    if (keys['KeyS'] || directionDawn) {
         playerBody.position.vsub(direction.multiplyScalar(0.04), playerBody.position);
     }
-    if (keys['KeyA']) {
+    if (keys['KeyA'] || directionLeft) {
         const right = new Vector3().crossVectors(direction, new Vector3(0, 1, 0)).normalize();
         playerBody.position.vsub(right.multiplyScalar(0.04), playerBody.position);
     }
-    if (keys['KeyD']) {
+    if (keys['KeyD'] || directionRigth) {
         const right = new Vector3().crossVectors(direction, new Vector3(0, 1, 0)).normalize();
         playerBody.position.vadd(right.multiplyScalar(0.04), playerBody.position);
     }
@@ -89,4 +100,16 @@ export function mouseLeaved(event) {
         clearInterval(intervalDr);
     }
 }
+
+controllerUp.addEventListener('touchstart', () => { directionUp = true; }, { passive: true });
+controllerUp.addEventListener('touchend', () => { directionUp = false; }, { passive: true });
+
+controllerDown.addEventListener('touchstart', () => { directionDawn = true; }, { passive: true });
+controllerDown.addEventListener('touchend', () => { directionDawn = false; }, { passive: true });
+
+controllerLeft.addEventListener('touchstart', () => { directionLeft = true; }, { passive: true });
+controllerLeft.addEventListener('touchend', () => { directionLeft = false; }, { passive: true });
+
+controllerRigth.addEventListener('touchstart', () => { directionRigth = true; }, { passive: true });
+controllerRigth.addEventListener('touchend', () => { directionRigth = false; }, { passive: true });
 

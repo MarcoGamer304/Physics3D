@@ -16,8 +16,8 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
       
         camera.position.copy(playerBody.position);
         camera.position.y += .5;
-
-        minimap.position.set(playerBody.position.x, playerBody.position.y + 40, playerBody.position.z);
+        //camera.rotation.y += .01
+        minimap.position.set(playerBody.position.x, playerBody.position.y + 60, playerBody.position.z);
         cannonDebugger.update();
         terrain.update();
         renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);

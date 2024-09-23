@@ -12,7 +12,6 @@ const controls = new PointerLockControls(camera, renderer.domElement);
 const direction = new Vector3();
 let keys = {};
 
-
 const cube1 = new Cube(1, 0xf00f0f0).getMesh();
 const cube2 = new Cube(2, 0xffff00).getMesh();
 

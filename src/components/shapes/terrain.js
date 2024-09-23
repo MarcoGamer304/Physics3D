@@ -2,7 +2,7 @@ import { BoxGeometry, MeshStandardMaterial, InstancedMesh, Matrix4, TextureLoade
 import * as CANNON from 'cannon-es';
 
 class Terrain {
-  constructor(terrainData, texturePath = "../../../public/textures/g_5.png", world, playerBody, activationDistance = 50) {
+  constructor(terrainData, texturePath = "../../../public/textures/g_5.png", world, playerBody, activationDistance = 2) {
     this.world = world;
     this.playerBody = playerBody;
     this.activationDistance = activationDistance;

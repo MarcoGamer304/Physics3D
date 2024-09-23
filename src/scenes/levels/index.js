@@ -17,12 +17,13 @@ import thread from "../../essentials/gameLoop/thread.js";
 import { onWindowResize } from "../../tools/resizeWindow.js";
 import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed } from "../../essentials/controlls/controlls.js";
 import { generateTerrain } from "../../tools/generateTerrain.js";
-
+import Music from '../../components/music/music.js'
 function init() {
 
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
     camera.position.set(40, 3, 30);
-
+    Music(camera);
+    
     const raycaster = new Raycaster();
     const world = new CANNON.World();
 
@@ -42,7 +43,7 @@ function init() {
     const playerMesh = new Cube([40, 2, 30], "../../../public/textures/wood.jpg", 1).getMesh();
     scene.add(playerMesh);
 
-    const minimap = new Camera(90, 1, 0.01, 0).getCamera();
+    const minimap = new Camera(90, 1, 0.01, 500).getCamera();
     minimap.position.set(playerMesh.position.x, 50, playerMesh.position.z);
     minimap.lookAt(playerMesh.position);
 
@@ -53,10 +54,10 @@ function init() {
 
     const elements = [planeFloor];
 
-    const asdasd = generateTerrain(300,300)
-    console.log(asdasd)
+    const randomMap = generateTerrain(300,300)
+    console.log(randomMap)
     
-    const terrain = new Terrain(asdasd, "../../../public/textures/g_5.png", world, playerBody, 2);
+    const terrain = new Terrain(randomMap, "../../../public/textures/g_5.png", world, playerBody, 2);
     scene.add(terrain.getMesh());
 
     scene.add(ambientLigth);
@@ -65,8 +66,6 @@ function init() {
     directionalLight.position.set(-10, 10, 10);
 
     document.getElementById("container3D").appendChild(renderer.domElement);
-
-  
 
     thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain);
 

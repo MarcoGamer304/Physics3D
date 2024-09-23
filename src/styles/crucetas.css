@@ -89,3 +89,10 @@ body {
     border: 1px solid rgb(255, 255, 255);
     transform: translate(-50%, -50%); 
 }
+
+.no-select{
+    user-select: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+  }

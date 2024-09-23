@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="./src/styles/crucetas.css">
 </head>
 
-<body>
+<body class="no-select">
 
   <div id="container3D"></div>
 
@@ -28,16 +28,16 @@
   </div>
 
   <div id="controller">
-    <div class="directional-pad">
-      <div class="button up"></div>
+    <div class="directional-pad no-select">
+      <div id="controller-up" class="button up "></div>
       <div class="row">
-        <div class="button left"></div>
-        <div class="button center"></div>
-        <div class="button right"></div>
+        <div id="controller-left" class="button left"></div>
+        <div id="controller-center" class="button center"></div>
+        <div id="controller-rigth" class="button right"></div>
       </div>
-      <div class="button down"></div>
+      <div id="controller-down" class="button down"></div>
     </div>
-    <div class="camera-pad">
+    <div class="camera-pad no-select">
       <div class="button up"></div>
       <div class="row">
         <div class="button left"></div>
@@ -49,6 +49,8 @@
   </div>
 
   <script type="module" src="./src/scenes/levels/index.js"></script>
+  <script type="module" src="./src/essentials/controlls/controlls.js"></script>
+  <script type="module" src="./src/essentials/controlls/voiceAssistance.js"></script>
 </body>
 
 </html>
