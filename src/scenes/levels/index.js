@@ -8,6 +8,7 @@ import Plane from "../../components/shapes/plane.js";
 import Terrain from '../../components/shapes/terrain.js'
 import { Vector3, Raycaster } from 'three';
 import terrainPreload from '../../tools/terrainPreload.js'
+import terrainPreload2 from '../../tools/terrainPreload2.js'
 import * as CANNON from 'cannon-es';
 import Device from "../../tools/Device.js";
 import Debugger from "../../tools/debbuger.js";
@@ -18,15 +19,16 @@ import { onWindowResize } from "../../tools/resizeWindow.js";
 import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed } from "../../essentials/controlls/controlls.js";
 import { generateTerrain } from "../../tools/generateTerrain.js";
 import Music from '../../components/music/music.js'
+
 function init() {
 
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
     camera.position.set(40, 3, 30);
     Music(camera);
-    
+
     const raycaster = new Raycaster();
     const world = new CANNON.World();
-
+    
     const cannonDebugger = Debugger(scene, world);
     const controls = Device(camera, renderer);
     const direction = new Vector3();
@@ -54,12 +56,12 @@ function init() {
 
     const elements = [planeFloor];
 
-    const randomMap = generateTerrain(300,300)
-    console.log(randomMap)
-    
-    const terrain = new Terrain(randomMap, "../../../public/textures/g_5.png", world, playerBody, 2);
-    scene.add(terrain.getMesh());
+    //const randomMap = generateTerrain(300, 300)
+    //console.log(JSON.stringify(randomMap, null, "\t"));
 
+    const terrain = new Terrain(terrainPreload2, "../../../public/textures/g_5.png", world, playerBody, 2);
+    scene.add(terrain.getMesh());
+   
     scene.add(ambientLigth);
     scene.add(directionalLight);
 
@@ -94,4 +96,6 @@ function init() {
 document.addEventListener("DOMContentLoaded", () => {
     init();
 })
+
+
 

@@ -1,4 +1,4 @@
-function RemoveBlock(scene, elements, raycaster) {
+function RemoveBlock(scene, elements, raycaster, world) {
     const intersects = raycaster.intersectObjects(elements);
 
     if (intersects.length > 0) {
@@ -6,10 +6,25 @@ function RemoveBlock(scene, elements, raycaster) {
 
         for (let index = 0; index < scene.children.length; index++) {
             const element = scene.children[index];
+
             if (element.position.x === Math.round(intersect.point.x) && element.position.y === Math.round(intersect.point.y) && element.position.z === Math.round(intersect.point.z)) {
+                for (let index = 0; index < world.bodies.length; index++) {
+                    const elementBody = world.bodies[index];
+                    if (element.position.x === elementBody.initPosition.x && element.position.y === elementBody.initPosition.y && element.position.z === elementBody.initPosition.z) {
+                        world.removeBody(elementBody)
+                        break;
+                    }
+                }
                 scene.remove(element);
             }
             if (element.position.x === Math.floor(intersect.point.x) && element.position.y === Math.round(intersect.point.y) && element.position.z === Math.floor(intersect.point.z)) {
+                for (let index = 0; index < world.bodies.length; index++) {
+                    const elementBody = world.bodies[index];
+                    if (element.position.x === elementBody.initPosition.x && element.position.y === elementBody.initPosition.y && element.position.z === elementBody.initPosition.z) {
+                        world.removeBody(elementBody)
+                        break;
+                    }
+                }
                 scene.remove(element);
             }
         }
