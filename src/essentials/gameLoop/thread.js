@@ -1,9 +1,21 @@
 import { Vector3 } from 'three';
 import { moveDirection } from '../controlls/controlls';
 
-const size = 200;
+const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+
+let height;
+let width;
+
+if (isPortrait) {
+     height = window.innerHeight * 50 / 100 < 200 ? 150 : 200;
+     width = window.innerWidth * 20 / 100 < 200 ? 200 : 200;
+} else {
+     height = window.innerHeight * 50 / 100 < 200 ? 100 : 200;
+     width = window.innerWidth * 20 / 100 < 200 ? 100 : 200;
+}
 
 function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain) {
+
     const animate = () => {
 
         moveDirection(keys, playerBody, direction, camera);
@@ -13,7 +25,7 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
 
         playerMesh.position.copy(playerBody.position);
         playerMesh.quaternion.copy(playerBody.quaternion);
-      
+
         camera.position.copy(playerBody.position);
         camera.position.y += .5;
         //camera.rotation.y += .01
@@ -23,8 +35,8 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
         renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         renderer.render(scene, camera);
 
-        renderer.setViewport(window.innerWidth - size - 20, 490, size, size);
-        renderer.setScissor(window.innerWidth - size - 20, 490, size, size);
+        renderer.setViewport(window.innerWidth - height - 20, window.innerHeight * 67 / 100, height, width);
+        renderer.setScissor(window.innerWidth - height - 20, window.innerHeight * 67 / 100, height, width);
         renderer.setScissorTest(true);
         renderer.render(scene, minimap);
 

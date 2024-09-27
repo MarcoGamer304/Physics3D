@@ -1,6 +1,7 @@
 import AddBlock from "../../essentials/mecanics/addBlocks.js";
 import RemoveBlock from "../../essentials/mecanics/removeBlocks.js";
 import { Vector3 } from 'three';
+import { detectDeviceType } from "../../tools/Device.js";
 
 let item;
 let pressIzq = false;
@@ -13,6 +14,7 @@ const controllerDown = document.getElementById("controller-down");
 const controllerUp = document.getElementById("controller-up");
 const controllerLeft = document.getElementById("controller-left");
 const controllerRigth = document.getElementById("controller-rigth");
+const controllerCenter = document.getElementById('controller-center');
 
 const cameraDown = document.getElementById("camera-down");
 const cameraUp = document.getElementById("camera-up");
@@ -42,6 +44,9 @@ let directionCameraDawn = false;
 let directionCameraLeft = false;
 let directionCameraRigth = false;
 
+let mobileJump = false;
+let mobileSprint = false;
+
 export function moveDirection(keys, playerBody, direction, camera) {
 
     camera.getWorldDirection(direction);
@@ -49,7 +54,12 @@ export function moveDirection(keys, playerBody, direction, camera) {
     direction.normalize();
     cameraRef = camera;
 
-    const speedPositive = keys['ShiftLeft'] ? 0.4 : 0.08;
+  
+    let speedPositive = 0.2;
+    if (keys['ShiftLeft'] || mobileSprint) {
+        speedPositive = 0.4;
+    }
+
     if (keys['KeyW'] || directionUp) {
         playerBody.position.vadd(direction.multiplyScalar(speedPositive), playerBody.position);
     }
@@ -68,8 +78,9 @@ export function moveDirection(keys, playerBody, direction, camera) {
 
 export function onKeyDown(event, keys, playerBody, controls, jumpSpeed) {
     keys[event.code] = true;
-    if (event.code === 'Space') {
+    if (event.code === 'Space' || mobileJump) {
         playerBody.velocity.y = jumpSpeed;
+        mobileJump = false;
     }
     if (event.code === 'Enter') {
         controls.lock();
@@ -88,6 +99,8 @@ export function getItemSelect() {
 }
 
 export function mousePressed(event, world, scene, elements, raycaster, itemSelect) {
+    if(detectDeviceType() !=='Desktop') return;
+
     if (event.button === 0) {
         AddBlock(world, scene, elements, raycaster, itemSelect);
         if (!pressIzq) {
@@ -115,7 +128,7 @@ export function mouseLeaved(event) {
     }
 }
 
-function ajustMobile(){
+function ajustMobile() {
     for (let index = 0; index < buttons.length; index++) {
         const element = buttons[index];
         if (isPortrait) {
@@ -161,6 +174,14 @@ export function cameraDirection(direccion, camera, estado = false) {
     }
 }
 
+export function setMobileJump() {
+    mobileJump = true;
+}
+
+export function setMobileSprint() {
+    mobileJump = true;
+}
+
 ajustMobile()
 //mobile controller
 controllerUp.addEventListener('touchstart', () => { directionUp = true; }, { passive: true });
@@ -175,6 +196,9 @@ controllerLeft.addEventListener('touchend', () => { directionLeft = false; }, { 
 controllerRigth.addEventListener('touchstart', () => { directionRigth = true; }, { passive: true });
 controllerRigth.addEventListener('touchend', () => { directionRigth = false; }, { passive: true });
 
+controllerCenter.addEventListener('touchstart', () => { mobileSprint = true; }, { passive: true });
+controllerCenter.addEventListener('touchend', () => { mobileSprint = false; }, { passive: true });
+
 //Mobile camera
 cameraUp.addEventListener('touchstart', () => { cameraDirection('up', cameraRef, true) }, { passive: true });
 cameraUp.addEventListener('touchend', () => { cameraDirection('up', cameraRef, false) }, { passive: true });
@@ -187,4 +211,3 @@ cameraLeft.addEventListener('touchend', () => { cameraDirection('left', cameraRe
 
 cameraRigth.addEventListener('touchstart', () => { cameraDirection('right', cameraRef, true) }, { passive: true });
 cameraRigth.addEventListener('touchend', () => { cameraDirection('right', cameraRef, false) }, { passive: true });
-

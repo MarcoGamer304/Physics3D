@@ -7,19 +7,33 @@ import Cube from "../../components/shapes/cube.js";
 import Plane from "../../components/shapes/plane.js";
 import Terrain from '../../components/shapes/terrain.js'
 import { Vector3, Raycaster } from 'three';
-import terrainPreload from '../../tools/terrainPreload.js'
 import terrainPreload2 from '../../tools/terrainPreload2.js'
 import * as CANNON from 'cannon-es';
-import Device from "../../tools/Device.js";
+import {DeviceController} from "../../tools/Device.js";
 import Debugger from "../../tools/debbuger.js";
 import PlaneColitions from "../../components/shapes/colitions/planeColition.js";
 import PlayerColitions from "../../components/shapes/colitions/playerColitions.js";
 import thread from "../../essentials/gameLoop/thread.js";
 import { onWindowResize } from "../../tools/resizeWindow.js";
-import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed } from "../../essentials/controlls/controlls.js";
+import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed, setMobileJump } from "../../essentials/controlls/controlls.js";
 import { generateTerrain } from "../../tools/generateTerrain.js";
 import Music from '../../components/music/music.js'
+/*
+TASKS
+1. Implementar portales
+2. Construir los niveles
+3. Decorar el lobby
+4. Crear la api de laravel
+5. Poteger las rutas
+6. Cookies
+7. Implementar inventario
+8. Hacer casas para robarlas
 
+FIXES
+1. Limitar distancia de construccion
+2. Añadir la Hud de bloques y adaptarla a mobile 
+3. Refactorizar removeBlocks 
+*/ 
 function init() {
 
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
@@ -28,9 +42,9 @@ function init() {
 
     const raycaster = new Raycaster();
     const world = new CANNON.World();
-    
+
     const cannonDebugger = Debugger(scene, world);
-    const controls = Device(camera, renderer);
+    const controls = DeviceController(camera, renderer);
     const direction = new Vector3();
 
     PlaneColitions(world);
@@ -61,7 +75,7 @@ function init() {
 
     const terrain = new Terrain(terrainPreload2, "../../../public/textures/g_5.png", world, playerBody, 2);
     scene.add(terrain.getMesh());
-   
+
     scene.add(ambientLigth);
     scene.add(directionalLight);
 
@@ -70,6 +84,9 @@ function init() {
     document.getElementById("container3D").appendChild(renderer.domElement);
 
     thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain);
+
+    const cameraCenter = document.getElementById('camera-center');
+    
 
     document.addEventListener('keydown', (event) => {
         onKeyDown(event, keys, playerBody, controls, jumpSpeed);
@@ -87,6 +104,11 @@ function init() {
     document.addEventListener('mouseup',
         (event) => { mouseLeaved(event) }, false
     );
+  
+    cameraCenter.addEventListener('touchstart', (event) => {
+        onKeyDown(event, keys, playerBody, controls, jumpSpeed);
+        setMobileJump();
+    }, { passive: true })
 
     window.addEventListener('resize',
         () => { onWindowResize(renderer, camera); }, false
