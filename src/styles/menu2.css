@@ -1,7 +1,6 @@
 * {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
+  
     box-sizing: border-box;
 }
 
@@ -79,10 +78,6 @@ li {
     border-radius: 0.5rem;
     border-color: gray;
     box-shadow: 2px 2px 6px gray;
-    
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
 
 #btn-close-register,

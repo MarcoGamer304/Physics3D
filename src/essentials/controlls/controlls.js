@@ -23,6 +23,14 @@ const cameraRigth = document.getElementById("camera-right");
 
 const buttons = document.getElementsByClassName('button');
 const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+const itemList = document.getElementsByClassName('block');
+const list = [...itemList]
+/*
+for (let index = 0; index < itemList.length; index++) {
+    const element = itemList[index];
+    console.log(element);
+    element.style.border = '3px solid rgba(102, 112, 12, 0.659)';
+}*/
 
 const diccionario = new Map([
     ['Digit1', "../../../public/textures/g_5.png"],
@@ -54,10 +62,10 @@ export function moveDirection(keys, playerBody, direction, camera) {
     direction.normalize();
     cameraRef = camera;
 
-  
-    let speedPositive = 0.2;
+
+    let speedPositive = 0.08;
     if (keys['ShiftLeft'] || mobileSprint) {
-        speedPositive = 0.4;
+        speedPositive = 0.15;
     }
 
     if (keys['KeyW'] || directionUp) {
@@ -78,16 +86,32 @@ export function moveDirection(keys, playerBody, direction, camera) {
 
 export function onKeyDown(event, keys, playerBody, controls, jumpSpeed) {
     keys[event.code] = true;
+
     if (event.code === 'Space' || mobileJump) {
+        // if( playerBody.velocity.y >= 0){
         playerBody.velocity.y = jumpSpeed;
         mobileJump = false;
+        // }
+
     }
     if (event.code === 'Enter') {
         controls.lock();
     }
     if (diccionario.has(event.code)) {
         item = diccionario.get(event.code)
+        let index = findMapIndex(item);
+
+        list.forEach(element => {
+            element.style.border = '4px solid rgba(212, 212, 212, 0.637)';
+        });
+
+        list[index].style.border = '5px solid rgba(0, 0, 0, 0.659)';
     }
+}
+
+function findMapIndex(keyFind) { 
+    const array = Array.from(diccionario.values());
+    return array.indexOf(keyFind);
 }
 
 export function onKeyUp(event, keys) {
@@ -98,21 +122,21 @@ export function getItemSelect() {
     return item;
 }
 
-export function mousePressed(event, world, scene, elements, raycaster, itemSelect) {
-    if(detectDeviceType() !=='Desktop') return;
+export function mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody) {
+    if (detectDeviceType() !== 'Desktop') return;
 
     if (event.button === 0) {
-        AddBlock(world, scene, elements, raycaster, itemSelect);
+        AddBlock(world, scene, elements, raycaster, itemSelect, playerBody);
         if (!pressIzq) {
             pressIzq = true;
-            intervalIzq = setInterval(() => AddBlock(world, scene, elements, raycaster, itemSelect), 150);
+            intervalIzq = setInterval(() => AddBlock(world, scene, elements, raycaster, itemSelect, playerBody), 150);
         }
     }
     if (event.button === 2) {
-        RemoveBlock(scene, elements, raycaster, world);
+        RemoveBlock(scene, elements, raycaster, world, playerBody);
         if (!pressDr) {
             pressDr = true;
-            intervalDr = setInterval(() => RemoveBlock(scene, elements, raycaster, world), 150);
+            intervalDr = setInterval(() => RemoveBlock(scene, elements, raycaster, world, playerBody), 150);
         }
     }
 }

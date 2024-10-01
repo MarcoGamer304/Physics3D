@@ -1,13 +1,20 @@
 import CubeMesh from "../../components/shapes/cubeMesh.js";
+import { Vector3 } from "three";
 
 const newBlocksArray = [];
 
-function AddBlock(world, scene, elements, raycaster, itemSelect) {
+function AddBlock(world, scene, elements, raycaster, itemSelect, playerBody) {
 
     const intersects = raycaster.intersectObjects(elements);
 
     if (intersects.length > 0) {
         const intersect = intersects[0];
+
+         // Delimite radius of raycast and player position
+        const vector3Raycast = new Vector3(intersect.point.x, intersect.point.y, intersect.point.z)
+        const distance = vector3Raycast.distanceTo(playerBody.position);
+        if (distance > 10) { return }
+        //
 
         const y = Math.floor(intersect.point.y) == 0 ? 1 : Math.round(intersect.point.y);
         const newCube = new CubeMesh([Math.round(intersect.point.x), y, Math.round(intersect.point.z)], itemSelect, 1, world).getMesh();
@@ -21,7 +28,7 @@ function AddBlock(world, scene, elements, raycaster, itemSelect) {
 
         if (alreadyExists) {
             if (y <= 40) {
-            const newCubeFix = new CubeMesh([Math.floor(intersect.point.x), y, Math.floor(intersect.point.z)], itemSelect, 1, world).getMesh();
+                const newCubeFix = new CubeMesh([Math.floor(intersect.point.x), y, Math.floor(intersect.point.z)], itemSelect, 1, world).getMesh();
                 scene.add(newCubeFix);
                 elements.push(newCubeFix);
                 newBlocksArray.push([newCubeFix.position.x, newCubeFix.position.y, newCubeFix.position.z]);
