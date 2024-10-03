@@ -22,15 +22,11 @@ const cameraLeft = document.getElementById("camera-left");
 const cameraRigth = document.getElementById("camera-right");
 
 const buttons = document.getElementsByClassName('button');
+const itemsBar = document.getElementsByClassName('block');
+const elementList = document.getElementById('itemList');
 const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 const itemList = document.getElementsByClassName('block');
 const list = [...itemList]
-/*
-for (let index = 0; index < itemList.length; index++) {
-    const element = itemList[index];
-    console.log(element);
-    element.style.border = '3px solid rgba(102, 112, 12, 0.659)';
-}*/
 
 const diccionario = new Map([
     ['Digit1', "../../../public/textures/g_5.png"],
@@ -62,12 +58,10 @@ export function moveDirection(keys, playerBody, direction, camera) {
     direction.normalize();
     cameraRef = camera;
 
-
     let speedPositive = 0.08;
     if (keys['ShiftLeft'] || mobileSprint) {
         speedPositive = 0.15;
     }
-
     if (keys['KeyW'] || directionUp) {
         playerBody.position.vadd(direction.multiplyScalar(speedPositive), playerBody.position);
     }
@@ -92,7 +86,6 @@ export function onKeyDown(event, keys, playerBody, controls, jumpSpeed) {
         playerBody.velocity.y = jumpSpeed;
         mobileJump = false;
         // }
-
     }
     if (event.code === 'Enter') {
         controls.lock();
@@ -109,7 +102,7 @@ export function onKeyDown(event, keys, playerBody, controls, jumpSpeed) {
     }
 }
 
-function findMapIndex(keyFind) { 
+function findMapIndex(keyFind) {
     const array = Array.from(diccionario.values());
     return array.indexOf(keyFind);
 }
@@ -152,18 +145,43 @@ export function mouseLeaved(event) {
     }
 }
 
+export function screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, remove) {
+    if (!remove) {
+        AddBlock(world, scene, elements, raycaster, itemSelect, playerBody);
+    }
+    if (remove) {
+        RemoveBlock(scene, elements, raycaster, world, playerBody);
+    }
+}
+
 function ajustMobile() {
     for (let index = 0; index < buttons.length; index++) {
         const element = buttons[index];
         if (isPortrait) {
+            elementList.style.marginTop = '70vh'
             element.style.width = '5vh';
             element.style.height = '5vh';
+
+            for (let items of itemsBar) {
+                items.style.width = '40px'
+                items.style.height = '40px'
+            }
         } else {
             element.style.width = '10vh';
             element.style.height = '10vh';
+            if (detectDeviceType() === 'Mobile') {
+                elementList.style.marginTop = '30%'
+
+                for (let items of itemsBar) {
+                    items.style.width = '3rem'
+                    items.style.height = '3rem'
+                }
+            }
         }
     }
 }
+
+ajustMobile();
 
 export function cameraDirection(direccion, camera, estado = false) {
     if (!camera) return;
@@ -198,15 +216,31 @@ export function cameraDirection(direccion, camera, estado = false) {
     }
 }
 
+for (let index = 0; index < itemsBar.length; index++) {
+    const element = itemsBar[index];
+
+    element.addEventListener('touchstart', () => {
+        item = '../../.' + element.getAttribute('src');
+
+        for (let item of itemsBar) {
+            item.style.border = '4px solid rgba(212, 212, 212, 0.637)';
+        }
+        element.style.border = '5px solid rgba(0, 0, 0, 0.659)';
+    })
+}
+
 export function setMobileJump() {
     mobileJump = true;
 }
 
-export function setMobileSprint() {
-    mobileJump = true;
+function setMobileSprint() {
+    if (mobileSprint) {
+        mobileSprint = false;
+    } else {
+        mobileSprint = true;
+    }
 }
 
-ajustMobile()
 //mobile controller
 controllerUp.addEventListener('touchstart', () => { directionUp = true; }, { passive: true });
 controllerUp.addEventListener('touchend', () => { directionUp = false; }, { passive: true });
@@ -220,8 +254,9 @@ controllerLeft.addEventListener('touchend', () => { directionLeft = false; }, { 
 controllerRigth.addEventListener('touchstart', () => { directionRigth = true; }, { passive: true });
 controllerRigth.addEventListener('touchend', () => { directionRigth = false; }, { passive: true });
 
-controllerCenter.addEventListener('touchstart', () => { mobileSprint = true; }, { passive: true });
-controllerCenter.addEventListener('touchend', () => { mobileSprint = false; }, { passive: true });
+controllerCenter.addEventListener('touchstart', () => {
+    setMobileSprint()
+}, { passive: true });
 
 //Mobile camera
 cameraUp.addEventListener('touchstart', () => { cameraDirection('up', cameraRef, true) }, { passive: true });

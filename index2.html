@@ -21,6 +21,7 @@
   <main id="hud">
     <div id="controller">
       <div class="directional-pad no-select">
+        <div id="build-btn" class="button" style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-left: 25%;"></div>
         <div id="controller-up" class="button"></div>
         <div class="row">
           <div id="controller-left" class="button"></div>
@@ -29,7 +30,9 @@
         </div>
         <div id="controller-down" class="button"></div>
       </div>
+
       <div class="camera-pad no-select">
+        <div id="delete-btn" class="button" style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-right: 25%;"></div>
         <div id="camera-up" class="button"></div>
         <div class="row">
           <div id="camera-left" class="button"></div>
@@ -37,10 +40,13 @@
           <div id="camera-right" class="button"></div>
         </div>
         <div id="camera-down" class="button"></div>
+
       </div>
     </div>
 
-    <ul class="itemList">
+
+
+    <ul id="itemList">
       <li class="item">
         <img src="./public/textures/g_5.png" alt="dirt" class="block">
       </li>
@@ -66,10 +72,10 @@
 
   </main>
 
-
   <script type="module" src="./src/scenes/levels/index.js"></script>
   <script type="module" src="./src/essentials/controlls/controlls.js"></script>
   <script type="module" src="./src/essentials/controlls/voiceAssistance.js"></script>
+
 </body>
 
 </html>

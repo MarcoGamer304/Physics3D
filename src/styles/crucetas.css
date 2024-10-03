@@ -56,7 +56,7 @@ body {
 .button {
     width: 8vh;
     height: 8vh;
-    background-color: #333;
+    background-color: #333333ad;
     border-radius: 50%;
     margin: 5px;
     cursor: pointer;
@@ -103,7 +103,7 @@ body {
    border-radius: 5px;
 }
 
-.itemList{
+#itemList{
     padding: 0;
     display: flex;
     flex-direction: row;

@@ -16,7 +16,7 @@ import PlaneColitions from "../../components/shapes/colitions/planeColition.js";
 import PlayerColitions from "../../components/shapes/colitions/playerColitions.js";
 import thread from "../../essentials/gameLoop/thread.js";
 import { onWindowResize } from "../../tools/resizeWindow.js";
-import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed, setMobileJump } from "../../essentials/controlls/controlls.js";
+import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed, setMobileJump,screenPressed } from "../../essentials/controlls/controlls.js";
 import { generateTerrain } from "../../tools/generateTerrain.js";
 import Music from '../../components/music/music.js'
 import PortalCircle from "../../components/shapes/portalCircle.js";
@@ -32,8 +32,7 @@ TASKS
 8. Hacer casas para robarlas
 
 FIXES
-1. adaptarl la Hud a mobile
-2. Refactorizar removeBlocks 
+1. Refactorizar removeBlocks 
 */
 function init() {
 
@@ -111,12 +110,24 @@ function init() {
     scene.add(directionalLight);
     directionalLight.position.set(10, 10, 10);
     //
-    
+
     document.getElementById("container3D").appendChild(renderer.domElement);
 
     thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, portalCamera1, portalCamera2, portalRenderTarget1, portalRenderTarget2);
 
     const cameraCenter = document.getElementById('camera-center');
+    const deleteMobile = document.getElementById('delete-btn')
+    const buildMobile = document.getElementById('build-btn')
+
+    buildMobile.addEventListener('touchstart', () => {
+        itemSelect = getItemSelect();
+        screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, true)  
+    })
+
+    deleteMobile.addEventListener('touchstart', () => {
+        itemSelect = getItemSelect();
+        screenPressed( world, scene, elements, raycaster, itemSelect, playerBody, false)
+    })
 
     cameraCenter.addEventListener('touchstart', (event) => {
         onKeyDown(event, keys, playerBody, controls, jumpSpeed);
@@ -132,12 +143,12 @@ function init() {
         (event) => { onKeyUp(event, keys) }, false
     );
 
-    document.addEventListener('mousedown',
-        (event) => { mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody) }, false
-    );
+    document.addEventListener('mousedown', (event) => {
+        itemSelect = getItemSelect();
+        mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody)
+    }, false);
 
-    document.addEventListener('mouseup',
-        (event) => { mouseLeaved(event) }, false
+    document.addEventListener('mouseup', (event) => { mouseLeaved(event) }, false
     );
 
     window.addEventListener('resize',

@@ -15,7 +15,7 @@ export function DeviceController(camera, renderer) {
         return controls = new PointerLockControls(camera, renderer.domElement);
 
     } else if (detectDeviceType() === 'Mobile') {
-        isMobile.style.zIndex = "2";
+        isMobile.style.zIndex = "2";      
         return controls = new OrbitControls(camera, renderer.domElement);
     };
 }
