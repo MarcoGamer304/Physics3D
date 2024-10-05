@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Vite App</title>
   <link rel="stylesheet" href="./src/styles/crucetas.css">
+  <link rel="stylesheet" href="./src/styles/chat.css">
 </head>
 
 <body class="no-select">
@@ -17,6 +18,15 @@
     <span class="rowArrow"></span>
     <span class="columnArrow"></span>
   </div>
+
+  <section id="messaging">
+    <form id="myForm">
+      <input type="text" placeholder="message" id="text">
+      <button type="submit">Send</button>
+    </form>
+
+    <div id="menssageList"></div>
+  </section>
 
   <main id="hud">
     <div id="controller">
@@ -75,6 +85,7 @@
   <script type="module" src="./src/scenes/levels/index.js"></script>
   <script type="module" src="./src/essentials/controlls/controlls.js"></script>
   <script type="module" src="./src/essentials/controlls/voiceAssistance.js"></script>
+  <script type="module" src="./src/essentials/chat/chat.js"></script>
 
 </body>
 

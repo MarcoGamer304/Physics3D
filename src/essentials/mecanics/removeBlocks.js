@@ -9,7 +9,7 @@ function RemoveBlock(scene, elements, raycaster, world, playerBody) {
         // Delimite radius of raycast and player position
         const vector3Raycast = new Vector3(intersect.point.x, intersect.point.y, intersect.point.z)
         const distance = vector3Raycast.distanceTo(playerBody.position);
-        if (distance > 10) { return }
+        if (distance > 15) { return }
         //
 
         for (let index = 0; index < scene.children.length; index++) {

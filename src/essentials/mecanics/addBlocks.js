@@ -13,7 +13,7 @@ function AddBlock(world, scene, elements, raycaster, itemSelect, playerBody) {
          // Delimite radius of raycast and player position
         const vector3Raycast = new Vector3(intersect.point.x, intersect.point.y, intersect.point.z)
         const distance = vector3Raycast.distanceTo(playerBody.position);
-        if (distance > 10) { return }
+        if (distance > 15) { return }
         //
 
         const y = Math.floor(intersect.point.y) == 0 ? 1 : Math.round(intersect.point.y);
