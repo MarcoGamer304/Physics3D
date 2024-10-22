@@ -362,7 +362,6 @@ footer {
 main,
 footer {
   position: relative;
-  z-index: 2;
 }
 
 main {

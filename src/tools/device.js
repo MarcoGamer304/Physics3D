@@ -12,6 +12,7 @@ export function DeviceController(camera, renderer) {
             : 'Desktop';
 
     if (detectDeviceType() === 'Desktop') {
+        isMobile.style.zIndex = "0"; 
         return controls = new PointerLockControls(camera, renderer.domElement);
 
     } else if (detectDeviceType() === 'Mobile') {
