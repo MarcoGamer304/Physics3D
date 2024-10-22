@@ -1,0 +1,55 @@
+@use '../abstracts/variables' as *;
+
+button {
+    background-color: $clr-black;
+    color: $clr-main;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height: max-content;
+    padding: 10px;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #272727;
+}
+
+.register-btn-container,
+.login-btn-container {
+    display: flex;
+    justify-content: center;
+    margin: $fs-nm 0;
+}
+
+.register-btn,
+.login-btn {
+    min-width: 60%;
+    padding: $fs-nmxx 0;
+    background-color: $clr-black;
+    color: $clr-main;
+    border: none;
+    border-radius: $fs-nnm;
+    cursor: pointer;
+    font-size: $fs-nm;
+}
+
+#btn-close-register,
+#btn-close-login {
+    margin-left: 90%;
+    border: none;
+    background-color: $clr-main;
+    font-size: $fs-nm;
+    font-weight: $fw-regular;
+}
+
+.register-btn:hover,
+.login-btn:hover {
+    background-color: #2e2e2e;
+}
+
+.btn-menu {
+    border-radius: $fs-mmd;
+    padding: $fs-nmxx $fs-mmd $fs-nmxx $fs-mmd;
+    border-color: $clr-main;
+}

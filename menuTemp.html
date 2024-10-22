@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./src/styles/menu2.css">
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+    <header class="title">
+        <h1
+            style="position: absolute; color: #8e2d2d; display: flex; justify-items: center; align-items: center; margin: 2rem; font-size: 2rem;">
+            Juego 3d</h1>
+        <textarea class="output" name="story" rows="5" cols="33"></textarea>
+    </header>
+
+    <main>
+        <ul>
+            <li><button id="btn-open-login" class="btn-menu">CONTINUE</button></li>
+            <li><button id="btn-open-register" class="btn-menu">REGISTER</button></li>
+            <li><button class="btn-menu"> <a href="./index2.html">OPTIONS</a></button></li>
+            <li><button class="btn-menu">CREDITS</button></li>
+        </ul>
+    </main>
+
+
+    <!--Login Modal-->
+    <dialog id="login-modal">
+        <button id="btn-close-login">X</button>
+        <div>
+            <h2 class="login-title">Login</h2>
+            <p class="register-paragraph">Enter your username and password to access your account</p>
+        </div>
+        <form id="loginForm">
+            <div class="user-container">
+                <p class="username-text">Username</p>
+                <input id="input-user" type="text" placeholder="username" required>
+            </div>
+            <div class="password-container">
+                <div class="password-keys">
+                    <p class="password-text">Password</p>
+                    <span><a class="recovery-password" href="">Forgot your password?</a></span>
+                </div>
+                <input id="input-password" type="password" placeholder="password" required>
+            </div>
+            <div class="login-btn-container">
+                <button class="login-btn">Login</button>
+            </div>
+        </form>
+    </dialog>
+    <!--End Login Modal-->
+
+    <!--Register Modal-->
+    <dialog id="register-modal">
+        <button id="btn-close-register">X</button>
+        <div>
+            <h2 class="register-title">Register</h2>
+            <p class="register-paragraph">Enter your email password to creater an account</p>
+        </div>
+        <form action="">
+            <div class="email-container">
+                <p class="email-text">Email</p>
+                <input class="input-email" type="text" placeholder="m@example.com" required>
+            </div>
+            <div class="password-container">
+                <p class="password-text">Password</p>
+                <input id="input-password" type="password" placeholder="password" required>
+            </div>
+            <div class="register-btn-container">
+                <button class="register-btn">Register</button>
+            </div>
+        </form>
+    </dialog>
+    <!--End Register Modal-->
+
+    <footer>
+        <nav class="links">
+            <p>www.gameasdasd.com</p>
+            <p>interactivas 2024</p>
+        </nav>
+        <img src="" alt="logo">
+    </footer>
+
+    <!-- <script type="module" src="./src/scenes/menu/menuScene.js"></script> -->
+    <script type="module" src="./src/scenes/menu/menu.js"></script>
+    <script type="module" src="./src/essentials/controlls/voiceAssistance.js"></script>
+</body>
+
+</html>

@@ -48,8 +48,8 @@ if (!SpeechRecognition || !SpeechGrammarList || !SpeechRecognitionEvent) {
     let audioBlob;
 
     function startRecognition() {
-        recognition.start();
-        console.log("Ready to receive a color command.");
+       // recognition.start();
+       // console.log("Ready to receive a color command.");
     }
 
     recognition.onresult = (event) => {
@@ -111,7 +111,7 @@ if (!SpeechRecognition || !SpeechGrammarList || !SpeechRecognitionEvent) {
     };
 
     recognition.onend = () => {
-        console.log("Recognition service disconnected, restarting...");
+        //console.log("Recognition service disconnected, restarting...");
         startRecognition();
     };
     startRecognition();

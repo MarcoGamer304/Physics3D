@@ -1,7 +1,4 @@
-body {
-    margin: 0;
-    padding: 0;
-}
+@use '../abstracts/variables' as *;
 
 #myForm{
     display: flex;
@@ -36,21 +33,6 @@ input {
     border: 2px solid #5f9ea0;
     border-radius: 5px;
     font-size: 16px;
-}
-
-button {
-    background-color: #000000;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    height: max-content;
-    padding: 10px;
-    margin-left: 10px;
-}
-
-button:hover {
-    background-color: #272727;
 }
 
 .message{

@@ -1,0 +1,9 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+.title,
+main,
+footer {
+    position: relative;
+    z-index: 2;
+}

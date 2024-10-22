@@ -1,0 +1,9 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+header.title {
+    display: flex;
+    justify-content: center;
+    padding: 10vh;
+    margin-bottom: 15vh;
+}

@@ -27,12 +27,13 @@ TASKS
 3. Decorar el lobby
 4. Crear la api de laravel
 5. Poteger las rutas
-6. Cookies
 7. Implementar inventario
-8. Hacer casas para robarlas
+8. Crear casas  
+9.Agregar enemigos
 
 FIXES
 1. Refactorizar removeBlocks 
+2. Ocultar y mostar el chat cuando se desea.
 */
 function init() {
 

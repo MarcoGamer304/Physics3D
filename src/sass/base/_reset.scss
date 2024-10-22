@@ -1,0 +1,28 @@
+@use "../abstracts/variables" as *;
+
+*{
+    overflow: hidden;
+    font-family: $ff-main;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+ul {
+    padding: 0;
+}
+
+li {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+ 
+}

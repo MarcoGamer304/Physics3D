@@ -28,7 +28,7 @@ loginForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
    login();
-    window.location.href = '../../../index2.html'
+    window.location.href = '../../../index.html'
 })
 
 

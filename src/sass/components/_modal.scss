@@ -1,0 +1,93 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+#login-modal {
+    max-width: 80%;
+}
+
+#register-modal,
+#login-modal {
+    max-width: 80%;
+    border-radius: 0.5rem;
+    border-color: gray;
+    box-shadow: 2px 2px 6px gray;
+}
+
+.register-title,
+.login-title {
+    display: flex;
+    justify-content: center;
+    margin: 0.3rem;
+}
+
+.register-paragraph,
+.login-paragraph {
+    text-align: center;
+    font-size: 0.915rem;
+    color: gray;
+    margin-bottom: 0rem;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+}
+
+.user-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+}
+
+.username-text {
+    margin-bottom: 0.4rem;
+    font-size: 0.925rem;
+}
+
+#input-user {
+    border-radius: 0.5rem;
+    text-indent: 4%;
+    padding: 0.6rem 0 0.5rem 0;
+}
+
+.password-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 0.4rem;
+    margin-right: 0.4rem;
+}
+
+.password-keys {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.password-text {
+    margin-bottom: 0.4rem;
+    font-size: 0.925rem;
+}
+
+#input-password {
+    border-radius: 0.5rem;
+    text-indent: 4%;
+    padding: 0.6rem 0 0.5rem 0;
+}
+
+.recovery-password {
+    margin-right: 0.2rem;
+    font-size: 0.750rem;
+    color: black;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    padding-top: 10vh;
+}
+
+.links p {
+    margin: 0.3rem;
+
+}
