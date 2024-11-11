@@ -8,7 +8,6 @@ import CubeMesh from "../../components/shapes/cubeMesh.js";
 import Plane from "../../components/shapes/plane.js";
 import Terrain from '../../components/shapes/terrain.js'
 import { Vector3, Raycaster, WebGLRenderTarget } from 'three';
-import terrainPreload2 from '../../tools/terrainPreload2.js'
 import * as CANNON from 'cannon-es';
 import { DeviceController } from "../../tools/Device.js";
 import Debugger from "../../tools/debbuger.js";
@@ -16,16 +15,16 @@ import PlaneColitions from "../../components/shapes/colitions/planeColition.js";
 import PlayerColitions from "../../components/shapes/colitions/playerColitions.js";
 import thread from "../../essentials/gameLoop/thread.js";
 import { onWindowResize } from "../../tools/resizeWindow.js";
-import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed, setMobileJump,screenPressed } from "../../essentials/controlls/controlls.js";
-import { generateTerrain } from "../../tools/generateTerrain.js";
+import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed, setMobileJump, screenPressed } from "../../essentials/controlls/controlls.js";
 import Music from '../../components/music/music.js'
 import PortalCircle from "../../components/shapes/portalCircle.js";
+import { getData } from "../../essentials/BackendMethods/Php/fetchMethods.js";
+
 /*
 TASKS
 1. Implementar portales (triggers de tp)
 2. Construir los niveles
 3. Decorar el lobby
-4. Crear la api de laravel
 5. Poteger las rutas
 7. Implementar inventario
 8. Crear casas  
@@ -35,8 +34,9 @@ FIXES
 1. Refactorizar removeBlocks 
 2. Ocultar y mostar el chat cuando se desea.
 */
-function init() {
+let terrainPhp = [];
 
+function init() {
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
     camera.position.set(40, 3, 30);
     Music(camera);
@@ -56,7 +56,7 @@ function init() {
     let canJump = true;
     let jumpSpeed = 6;
     let isJumping = false;
-
+    
     //Player Mesh and colitions
     const playerMesh = new Cube([40, 2, 30], "../../../public/textures/wood.jpg", 1).getMesh();
     scene.add(playerMesh);
@@ -98,8 +98,7 @@ function init() {
 
     //const randomMap = generateTerrain(300, 300)
     //console.log(JSON.stringify(randomMap, null, "\t"));
-
-    const terrain = new Terrain(terrainPreload2, "../../../public/textures/g_5.png", world, playerBody, 2);
+    const terrain = new Terrain(terrainPhp, "../../../public/textures/g_5.png", world, playerBody, 2);
     scene.add(terrain.getMesh());
 
     //colisiones iniciales del raycast de la malla del terreno y suelo
@@ -122,12 +121,12 @@ function init() {
 
     buildMobile.addEventListener('touchstart', () => {
         itemSelect = getItemSelect();
-        screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, true)  
+        screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, true)
     })
 
     deleteMobile.addEventListener('touchstart', () => {
         itemSelect = getItemSelect();
-        screenPressed( world, scene, elements, raycaster, itemSelect, playerBody, false)
+        screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, false)
     })
 
     cameraCenter.addEventListener('touchstart', (event) => {
@@ -158,7 +157,14 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    init();
+    getData().then(terrain => {
+     try {
+        terrainPhp = JSON.parse(terrain.terrain_base);
+    } catch (error) {
+        console.error('Error al convertir el string a array:', error);
+    }
+        init();
+    });  
 })
 
 

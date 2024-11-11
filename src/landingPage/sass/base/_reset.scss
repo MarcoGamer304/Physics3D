@@ -1,0 +1,23 @@
+@use "../abstracts/variables" as *;
+
+*{
+    overflow: hidden;
+    font-family: 'Sunday Orange', sans-serif;
+    text-decoration: none;
+}
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}

@@ -5,84 +5,160 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vite App</title>
   <link rel="stylesheet" href="./style.css">
+  <title>Interactivas LandingPage</title>
+  <script type="module" src="./src/landingPage/index.js"></script>
+  <script type="module" src="./src/landingPage/three/renderModel.js"></script>
 </head>
 
 <body class="no-select">
+  <div id="banner" class="section">
+    <header>
+      <nav id="navBar">
+        <img src="./public/svg/vite.svg" width="30px" height="30px" alt="logo">
+        <button id="loginBtn" class="btn">Login</button>
+      </nav>
+    </header>
 
-  <div id="container3D"></div>
-
-  <div class="crosshair">
-    <span class="rowArrow"></span>
-    <span class="columnArrow"></span>
+    <main id="mainSection">
+      <div id="information">
+        <h1 class="margin-0 title">Interactivas</h1>
+        <p class="description">Immerse yourself in a world full of challenges and adventures. Are you ready to start
+          your journey?</p>
+        <button class="btnPlay" id="play-now">Play now</button>
+      </div>
+      <div id="canvasFrame"></div>
+    </main>
   </div>
+  <span class="frase">Discover an unforgettable experience!</span>
 
-  <section id="messaging">
-    <form id="myForm">
-      <input type="text" placeholder="message" id="text">
-      <button type="submit">Send</button>
-    </form>
-
-    <div id="menssageList"></div>
+  <section id="about-section" class="section">
+    <nav>
+      <ul id="nav-about">
+        <li class="item-about select"><a href="#about-section">About</a></li>
+        <li class="item-about"><a href="#features-section">Features</a></li>
+        <li class="item-about"><a href="#mechanics-section">Mechanics</a></li>
+        <li class="item-about"><a href="#banner">Home</a></li>
+      </ul>
+    </nav>
+    <article id="article-about">
+      <ol>
+        <li>
+          <h2 class="subtitle-about">Description</h2>
+          <p class="text-about"><strong>Mineblock</strong>
+            is a fast-paced platformer that challenges players to navigate through intricate, obstacle-filled levels
+            while prioritizing optimization and quick thinking. The core gameplay revolves around tight controls, fluid
+            movement mechanics, and strategic problem-solving under pressure.</p>
+        </li>
+        <li>
+          <h2 class="subtitle-about">Gameplay</h2>
+          <p class="text-about">In <strong>Mineblock</strong>, players must quickly assess their surroundings and make
+            split-second
+            decisions to overcome various obstacles, traps, and puzzles. Each level is designed to test both reflexes
+            and strategic planning, rewarding players who can find the most efficient paths through a stage. Speed and
+            precision are essential, but so is the ability to adapt and think creatively in high-stress situations.</p>
+        </li>
+      </ol>
+    </article>
   </section>
 
-  <main id="hud">
-    <div id="controller">
-      <div class="directional-pad no-select">
-        <div id="build-btn" class="button" style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-left: 25%;"></div>
-        <div id="controller-up" class="button"></div>
-        <div class="row">
-          <div id="controller-left" class="button"></div>
-          <div id="controller-center" class="button"></div>
-          <div id="controller-rigth" class="button"></div>
-        </div>
-        <div id="controller-down" class="button"></div>
-      </div>
+  <section id="features-section" class="section" style="min-height: 100vh; background-color: rgb(192, 124, 14);">
+    <nav>
+      <ul id="nav-features">
+        <li class="item-features"><a href="#about-section">About</a></li>
+        <li class="item-features select"><a href="#features-section">Features</a></li>
+        <li class="item-features"><a href="#mechanics-section">Mechanics</a></li>
+        <li class="item-features"><a href="#banner">Home</a></li>
+      </ul>
+    </nav>
+    <article id="article-features">
+      <ol>
+        <li>
+          <h2 class="subtitle-features">Dynamic Levels with Multiple Solutions</h2>
+          <p class="text-features">
+            Each level presents a unique set of challenges that can be approached in various ways, encouraging players
+            to find the quickest, most efficient route players must think fast to succeed.</p>
+        </li>
+        <li>
+          <h2 class="subtitle-features">Dynamic Difficulty Scaling</h2>
+          <p class="text-features"><strong>Mineblock</strong> adjusts its difficulty based on player performance.
+            Whether a player is new to platformers or a
+            seasoned veteran, the game provides a level of challenge that feels fair but demanding, encouraging players
+            to improve and push their limits.</p>
+        </li>
+        <li>
+          <h2 class="subtitle-features">Time Management:</h2>
+          <p class="text-features">Each level has a time limit, pushing players to act quickly. Players are encouraged
+            to revisit levels to
+            perfect their runs and achieve faster completion times.</p>
+        </li>
+      </ol>
+    </article>
+  </section>
 
-      <div class="camera-pad no-select">
-        <div id="delete-btn" class="button" style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-right: 25%;"></div>
-        <div id="camera-up" class="button"></div>
-        <div class="row">
-          <div id="camera-left" class="button"></div>
-          <div id="camera-center" class="button"></div>
-          <div id="camera-right" class="button"></div>
-        </div>
-        <div id="camera-down" class="button"></div>
+  <section id="mechanics-section" class="section" style="min-height: 100vh; background-color: rgb(192, 124, 14);">
+    <nav>
+      <ul id="nav-features">
+        <li class="item-features"><a href="#about-section">About</a></li>
+        <li class="item-features"><a href="#features-section">Features</a></li>
+        <li class="item-features select"><a href="#mechanics-section">Mechanics</a></li>
+        <li class="item-features"><a href="#banner">Home</a></li>
+      </ul>
+    </nav>
+    <article id="article-features">
+      <ol>
+        <li>
+          <h2 class="subtitle-features">Realistic Physics Puzzles</h2>
+          <p class="text-features">
+            <strong>Mineblock</strong> integrates realistic physics into its puzzles, adding a layer of complexity and
+            immersion players You may need to move or stack blocks, create bridges, or activate mechanisms by precisely
+            placing objects.
+          </p>
+        </li>
+        <li>
+          <h2 class="subtitle-features">Town Progression</h2>
+          <p class="text-features">As players progress, completing platforming challenges, players earn rewards that
+            they can use to expand and improve their city. The city goes from being a small canvas to becoming a
+            populated center full of custom-made structures.</p>
+        </li>
+        <li>
+          <h2 class="subtitle-features">Environmental Interactions</h2>
+          <p class="text-features">Blocks can be used to create devices that help solve puzzles. build a ramp to launch
+            an object into the air. Interaction feels natural and intuitive, allowing for creative problem solving.</p>
+        </li>
+      </ol>
+    </article>
+  </section>
 
-      </div>
+  <dialog id="loginModal">
+    <div class="modal-header">
+      <p><Strong>Login with</Strong></p>
+      <span id="loginClose">X</span>
     </div>
 
-    <ul id="itemList">
-      <li class="item">
-        <img src="./public/textures/g_5.png" alt="dirt" class="block">
-      </li>
-      <li class="item">
-        <img src="./public/textures/wood.jpg" alt="wood" class="block">
-      </li>
-      <li class="item">
-        <img src="./public/textures/stone.png" alt="stone" class="block">
-      </li>
-      <li class="item">
-        <img src="./public/textures/snow.png" alt="snow" class="block">
-      </li>
-      <li class="item">
-        <img src="./public/textures/sand.png" alt="sand" class="block">
-      </li>
-      <li class="item">
-        <img src="./public/textures/log.png" alt="log" class="block">
-      </li>
-      <li class="item">
-        <img src="./public/textures/leaves.png" alt="leaves" class="block">
-      </li>
-    </ul>
+    <div id="external-login">
+      <img src="./public/svg/google-logo.svg" width="35vw" alt="svg" class="networks">
+      <img src="./public/svg/github-logo.svg" width="35vw" alt="svg" class="networks">
+      <img src="./public/svg/facebook-logo.svg" width="35vw" alt="svg" class="networks">
+    </div>
 
-  </main>
+    <div class="separator">
+      <span class="line"></span>
+      <span> or </span>
+      <span class="line"></span>
+    </div>
 
-  <script type="module" src="./src/scenes/levels/index.js"></script>
-  <script type="module" src="./src/essentials/controlls/controlls.js"></script>
-  <script type="module" src="./src/essentials/controlls/voiceAssistance.js"></script>
-  <script type="module" src="./src/essentials/chat/chat.js"></script>
+    <form id="loginForm">
+      <div>
+        <input type="text" placeholder="Username" class="input" id="input-login-user" required>
+      </div>
+      <div>
+        <input type="Password" placeholder="Password" class="input" id="input-login-pass" required>
+      </div>
+      <button id="loginSubmit">Send</button>
+    </form>
+    <span class="createAccount">Looking to<button class="refactorBtn clrBlue">create an account ?</button></span>
+  </dialog>
 
 </body>
 

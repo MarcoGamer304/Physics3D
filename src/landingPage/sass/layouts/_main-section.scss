@@ -1,0 +1,32 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+#canvasFrame {
+    min-width: $cs-md;
+    min-height: $cs-md;
+}
+
+.frase {
+    color: $clr-white;
+    position: absolute;
+    top: 90%;
+    right: 50%;
+    transform: translate(50%, 50%);
+    text-align: center;
+    min-width: 100%;
+}
+
+.title {
+    font-family: $ff-title;
+    font-size: $fs-xxmd;
+    color: $clr-dark;
+}
+
+.description {
+    color: $clr-white;
+}
+
+#loginBtn:hover {
+    background-color: $clr-white-hover;
+    border-color: $clr-white-hover;
+}

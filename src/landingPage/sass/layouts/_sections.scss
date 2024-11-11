@@ -1,0 +1,66 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+.section {
+    min-height: 100vh;
+    background-color: rgb(192, 124, 14);
+}
+
+#information {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    gap: $vh-nnm;
+    flex-direction: column;
+    color: $clr-white;
+    max-width: 60%;
+    background: none;
+
+    @include respond-to($tablet-portrait) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: $vh-xnnm;
+        text-align: center;
+        flex-direction: column;
+        color: $clr-white;
+        max-width: 60%;
+        background: none;
+    }
+}
+
+#article-about,
+#article-features {
+    margin-left: $mt-nm;
+    color: $clr-white;
+    width: 60vw;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    justify-content: center;
+    flex-direction: column;
+
+    @include respond-to($tablet-portrait) {
+        display: flex;
+        height: 80vh;
+        width: 80vw;
+        justify-content: center;
+        flex-direction: column;
+    }
+}
+
+#links {
+    padding: 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    gap: $vw-nnm;
+    list-style: none;
+}
+
+.subtitle-about,
+.subtitle-features {
+    color: $clr-dark;
+    margin-bottom: -10px;
+    margin-top: $mt-nm;
+}

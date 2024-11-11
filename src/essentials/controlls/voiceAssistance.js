@@ -27,10 +27,10 @@ if (!SpeechRecognition || !SpeechGrammarList || !SpeechRecognitionEvent) {
     const routes = {
         'Menú': '/index.html',
         'menú': '/index.html',
-        'Nivel 1': '/index2.html',
-        'nivel 1': '/index2.html',
-        'Nivel 2': '/level2.html',
-        'nivel 2': '/level2.html'
+        'Nivel 1': '/menuTemp.html',
+        'nivel 1': '/menuTemp.html',
+        'Nivel 2': '/menuTemp.html',
+        'nivel 2': '/menuTemp.html'
     };
 
     const recognition = new SpeechRecognition();
@@ -48,7 +48,7 @@ if (!SpeechRecognition || !SpeechGrammarList || !SpeechRecognitionEvent) {
     let audioBlob;
 
     function startRecognition() {
-       // recognition.start();
+        recognition.start();
        // console.log("Ready to receive a color command.");
     }
 
@@ -74,7 +74,7 @@ if (!SpeechRecognition || !SpeechGrammarList || !SpeechRecognitionEvent) {
                         const response = await post(audioBlob);
 
                         if (response.Distance <= 90) {
-                            window.location.href = "../../../index2.html";
+                            window.location.href = "../../../index.html";
                         } else {
                             alert('Las voces no coinciden')
                         }

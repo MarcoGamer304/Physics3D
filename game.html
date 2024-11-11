@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vite App</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="no-select">
+
+  <div id="container3D"></div>
+
+  <div class="crosshair">
+    <span class="rowArrow"></span>
+    <span class="columnArrow"></span>
+  </div>
+
+  <section id="messaging">
+    <form id="myForm">
+      <input type="text" placeholder="message" id="text">
+      <button type="submit">Send</button>
+    </form>
+
+    <div id="menssageList"></div>
+  </section>
+
+  <main id="hud">
+    <div id="controller">
+      <div class="directional-pad no-select">
+        <div id="build-btn" class="button" style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-left: 25%;"></div>
+        <div id="controller-up" class="button"></div>
+        <div class="row">
+          <div id="controller-left" class="button"></div>
+          <div id="controller-center" class="button"></div>
+          <div id="controller-rigth" class="button"></div>
+        </div>
+        <div id="controller-down" class="button"></div>
+      </div>
+
+      <div class="camera-pad no-select">
+        <div id="delete-btn" class="button" style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-right: 25%;"></div>
+        <div id="camera-up" class="button"></div>
+        <div class="row">
+          <div id="camera-left" class="button"></div>
+          <div id="camera-center" class="button"></div>
+          <div id="camera-right" class="button"></div>
+        </div>
+        <div id="camera-down" class="button"></div>
+
+      </div>
+    </div>
+
+    <ul id="itemList">
+      <li class="item">
+        <img src="./public/textures/g_5.png" alt="dirt" class="block">
+      </li>
+      <li class="item">
+        <img src="./public/textures/wood.jpg" alt="wood" class="block">
+      </li>
+      <li class="item">
+        <img src="./public/textures/stone.png" alt="stone" class="block">
+      </li>
+      <li class="item">
+        <img src="./public/textures/snow.png" alt="snow" class="block">
+      </li>
+      <li class="item">
+        <img src="./public/textures/sand.png" alt="sand" class="block">
+      </li>
+      <li class="item">
+        <img src="./public/textures/log.png" alt="log" class="block">
+      </li>
+      <li class="item">
+        <img src="./public/textures/leaves.png" alt="leaves" class="block">
+      </li>
+    </ul>
+
+  </main>
+
+  <script type="module" src="./src/scenes/levels/index.js"></script>
+  <script type="module" src="./src/essentials/controlls/controlls.js"></script>
+  <script type="module" src="./src/essentials/controlls/voiceAssistance.js"></script>
+  <script type="module" src="./src/essentials/chat/chat.js"></script>
+
+</body>
+
+</html>

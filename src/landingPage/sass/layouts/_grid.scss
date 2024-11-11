@@ -1,0 +1,20 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+#mainSection {
+    margin-top: $mt-lg;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    place-items: center;
+
+    @include respond-to($tablet-portrait) {
+        margin-top: $mt-xmd;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        gap: $mt-md;
+    }
+   
+    @include respond-to($large-desktop) {
+        margin-top: 20vh;
+    }
+}

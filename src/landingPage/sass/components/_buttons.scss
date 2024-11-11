@@ -1,0 +1,25 @@
+@use '../abstracts/variables' as *;
+
+.btn {
+    border: 2px solid $clr-brown;
+    border-radius: $fs-nnm;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    background-color: $clr-white;
+    color: $clr-black;
+    font-size: $fs-nm;
+}
+
+.btnPlay {
+    padding: 2vh 4vw 2vh 4vw;
+    border-radius: $fs-nnm;
+    border: 1px transparent;
+    background-color: $clr-dark;
+    color: $clr-white;
+    font-family: $ff-script;
+    font-size: $fs-xnm;
+    font-weight: $fw-regular;
+}
+
+.btnPlay:hover {
+    background-color: $clr-dark-hover;
+}

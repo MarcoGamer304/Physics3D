@@ -1,0 +1,93 @@
+@use '../abstracts/mixins' as *;
+@use '../abstracts/variables' as *;
+
+#loginModal {
+    min-width: 20vw;
+    max-width: 80vw;
+    border-radius: $fs-nnm;
+    border: transparent;
+    padding: $mt-nm;
+
+    @include respond-to($tablet-portrait) {
+        min-width: 75vw;
+    }
+
+    @include respond-to($tablet-landscape) {
+        min-width: 45vw;
+    }
+
+    @include respond-to($large-desktop) {
+        min-width: 20vw;
+    }
+}
+
+#loginModal p {
+    margin: $m-nn;
+}
+
+#loginClose {
+    cursor: pointer;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $mt-xnm;
+}
+
+.input {
+    min-width: 96%;
+    padding: 3% 0 3% 0;
+    margin-bottom: 2%;
+    padding-left: $fs-nnm;
+}
+
+#loginSubmit {
+    min-width: 100%;
+    background-color: $clr-black;
+    border-radius: $fs-nmx;
+    padding: 3% 0 3% 0;
+    color: $clr-white;
+    cursor: pointer;
+}
+
+.refactorBtn {
+    border: none;
+    background-color: $clr-white;
+}
+
+.clrBlue {
+    color: $clr-blue;
+    cursor: pointer;
+}
+
+.createAccount {
+    display: grid;
+    place-items: center;
+    margin-top: $mt-nm;
+}
+
+#external-login {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: $mt-nm;
+}
+
+.networks {
+    cursor: pointer;
+}
+
+.separator {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: $fs-nmxx;
+    margin-bottom: $mt-nm;
+}
+
+.line {
+    border: 1px solid $clr-black;
+    width: 50%;
+}
