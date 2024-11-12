@@ -1,1 +1,20 @@
+@use '../abstracts/variables' as *;
+
+.no-select {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.margin-0 {
+    margin: $m-nn;
+}
+
+.select{
+    background-color: $clr-yellow;
+}
+
+.text-features, .text-about{
+    text-align: justify;
+}
 

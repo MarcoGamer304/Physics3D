@@ -78,15 +78,28 @@ export function moveDirection(keys, playerBody, direction, camera) {
     }
 }
 
-export function onKeyDown(event, keys, playerBody, controls, jumpSpeed) {
+export function onKeyDown(event, keys, playerBody, controls, jumpSpeed, raycasterColitions, elements) {
     keys[event.code] = true;
 
     if (event.code === 'Space' || mobileJump) {
-        // if( playerBody.velocity.y >= 0){
-        playerBody.velocity.y = jumpSpeed;
-        mobileJump = false;
-        // }
+
+        const intersects = raycasterColitions.intersectObjects(elements);
+
+        if (intersects.length > 0) {
+            const intersect = intersects[0];
+            console.log(intersect)
+            const vector3Raycast = new Vector3(intersect.point.x, intersect.point.y, intersect.point.z)
+            const distance = vector3Raycast.distanceTo(playerBody.position);
+
+            if (distance > 1 || intersect.point.y-playerBody.position.y > 0) {
+                return;
+            }
+
+            playerBody.velocity.y = jumpSpeed;
+            mobileJump = false;
+        }
     }
+
     if (event.code === 'Enter') {
         controls.lock();
     }

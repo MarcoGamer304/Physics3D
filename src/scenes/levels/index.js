@@ -34,14 +34,20 @@ FIXES
 1. Refactorizar removeBlocks 
 2. Ocultar y mostar el chat cuando se desea.
 */
+
 let terrainPhp = [];
+let buildsAdminPhp = [];
+let timePlayed = Number();
 
 function init() {
+    timePlayed += Date.now();
+
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
     camera.position.set(40, 3, 30);
     Music(camera);
 
     const raycaster = new Raycaster();
+    const raycasterCollitions = new Raycaster();
     const world = new CANNON.World();
 
     const cannonDebugger = Debugger(scene, world);
@@ -56,7 +62,7 @@ function init() {
     let canJump = true;
     let jumpSpeed = 6;
     let isJumping = false;
-    
+
     //Player Mesh and colitions
     const playerMesh = new Cube([40, 2, 30], "../../../public/textures/wood.jpg", 1).getMesh();
     scene.add(playerMesh);
@@ -71,8 +77,9 @@ function init() {
 
     //Portal1
     const portalRenderTarget1 = new WebGLRenderTarget(512, 512);
-    scene.add(new CubeMesh([93, 1.5, 153], "../../../public/textures/wood.jpg", 2, world).getMesh());
-    const portalLevel1 = new PortalCircle([93.51, 1.5, 153], portalRenderTarget1).getMesh();
+    scene.add(new CubeMesh([93, 2.5, 153], "../../../public/textures/wood.jpg", 2, world).getMesh());
+    const portalLevel1 = new PortalCircle([93.51, 2.5, 153], portalRenderTarget1).getMesh();
+    portalLevel1.index = 0;
     portalLevel1.rotateY(-29.84)
     scene.add(portalLevel1)
 
@@ -83,8 +90,9 @@ function init() {
 
     //Portal2
     const portalRenderTarget2 = new WebGLRenderTarget(512, 512);
-    scene.add(new CubeMesh([93, 1.5, 155], "../../../public/textures/wood.jpg", 2, world).getMesh());
-    const portalLevel2 = new PortalCircle([93.51, 1.5, 155], portalRenderTarget2).getMesh();
+    scene.add(new CubeMesh([93, 2.5, 155], "../../../public/textures/wood.jpg", 2, world).getMesh());
+    const portalLevel2 = new PortalCircle([93.51, 2.5, 155], portalRenderTarget2).getMesh();
+    portalLevel2.index = 1;
     portalLevel2.rotateY(-29.84)
     scene.add(portalLevel2)
 
@@ -100,11 +108,13 @@ function init() {
     //console.log(JSON.stringify(randomMap, null, "\t"));
     const terrain = new Terrain(terrainPhp, "../../../public/textures/g_5.png", world, playerBody, 2);
     scene.add(terrain.getMesh());
+    //build
+    const buildAdmin = new Terrain(buildsAdminPhp, "../../../public/textures/brick_black.png", world, playerBody, 2);
+    scene.add(buildAdmin.getMesh());
 
     //colisiones iniciales del raycast de la malla del terreno y suelo
-    const elements = [planeFloor, terrain.getMesh()];
+    const elements = [planeFloor, terrain.getMesh(), buildAdmin.getMesh()];
     //
-
     //Ligths
     scene.add(ambientLigth);
     scene.add(directionalLight);
@@ -113,7 +123,7 @@ function init() {
 
     document.getElementById("container3D").appendChild(renderer.domElement);
 
-    thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, portalCamera1, portalCamera2, portalRenderTarget1, portalRenderTarget2);
+    thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, portalCamera1, portalCamera2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions);
 
     const cameraCenter = document.getElementById('camera-center');
     const deleteMobile = document.getElementById('delete-btn')
@@ -135,7 +145,7 @@ function init() {
     }, { passive: true })
 
     document.addEventListener('keydown', (event) => {
-        onKeyDown(event, keys, playerBody, controls, jumpSpeed);
+        onKeyDown(event, keys, playerBody, controls, jumpSpeed, raycasterCollitions, elements);
         itemSelect = getItemSelect();
     }, false);
 
@@ -145,7 +155,8 @@ function init() {
 
     document.addEventListener('mousedown', (event) => {
         itemSelect = getItemSelect();
-        mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody)
+        mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody);
+        console.log(Date.now() - timePlayed);
     }, false);
 
     document.addEventListener('mouseup', (event) => { mouseLeaved(event) }, false
@@ -158,13 +169,14 @@ function init() {
 
 document.addEventListener("DOMContentLoaded", () => {
     getData().then(terrain => {
-     try {
-        terrainPhp = JSON.parse(terrain.terrain_base);
-    } catch (error) {
-        console.error('Error al convertir el string a array:', error);
-    }
+        try {
+            terrainPhp = JSON.parse(terrain.terrain_base);
+            buildsAdminPhp = JSON.parse(terrain.build_admin);
+        } catch (error) {
+            console.error('Error al convertir el string a array:', error);
+        }
         init();
-    });  
+    });
 })
 
 

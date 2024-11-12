@@ -16,12 +16,15 @@ if (isPortrait) {
     width = window.innerWidth * 20 / 100 < 200 ? 100 : 200;
 }
 
-function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2) {
+function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions) {
 
     const animate = () => {
         moveDirection(keys, playerBody, direction, camera);
 
         raycaster.setFromCamera(new Vector3(0, 0, 0), camera);
+        raycasterCollitions.setFromCamera(new Vector3(0, 0, 0), camera);
+        raycasterCollitions.ray.direction.copy(new Vector3(0, -1, 0));
+
         world.step(1 / 60);
 
         playerMesh.position.copy(playerBody.position);
@@ -33,6 +36,9 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
         minimap.position.set(playerBody.position.x, playerBody.position.y + 60, playerBody.position.z);
         cannonDebugger.update();
         terrain.update();
+        buildAdmin.update();
+
+        portalCollitions(playerBody, [portalLevel1, portalLevel2]);
 
         rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, cameraLevel1, cameraLevel2, camera);
         camerasAnimated([cameraLevel1, cameraLevel2]);
@@ -87,6 +93,22 @@ function cameraAnimation(camera, camMove) {
 function camerasAnimated(cameras) {
     cam1Move = cameraAnimation(cameras[0], cam1Move);
     cam2Move = cameraAnimation(cameras[1], cam2Move);
+}
+
+function portalCollitions(playerBody, arrayPortales) {
+    if (!arrayPortales) return;
+
+    arrayPortales.forEach(element => {
+        const distance = playerBody.position.distanceTo(element.position);
+        if (distance <= 1) {
+            console.log("portal: " + element.index);
+            if (element.index === 1) {
+                playerBody.position.set(5, 5, 5);
+            } else if (element.index === 0) {
+                playerBody.position.set(150, 15, 200);
+            }
+        }
+    });
 }
 
 export default thread

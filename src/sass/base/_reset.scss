@@ -16,6 +16,10 @@ body{
     position: relative;
 }
 
+html{
+    scroll-behavior: smooth;
+}
+
 ul {
     padding: 0;
 }
