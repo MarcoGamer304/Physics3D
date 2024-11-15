@@ -12,7 +12,6 @@ const canvasFrame = document.getElementById('canvasFrame');
 
 light(scene);
 
-
 modelLoader(scene, renderer ,canvasFrame, objToRender);
 
 thread(scene, camera, renderer);

@@ -48,7 +48,6 @@ let directionCameraDawn = false;
 let directionCameraLeft = false;
 let directionCameraRigth = false;
 
-let mobileJump = false;
 let mobileSprint = false;
 
 export function moveDirection(keys, playerBody, direction, camera) {
@@ -58,9 +57,9 @@ export function moveDirection(keys, playerBody, direction, camera) {
     direction.normalize();
     cameraRef = camera;
 
-    let speedPositive = 0.08;
+    let speedPositive = 0.06;
     if (keys['ShiftLeft'] || mobileSprint) {
-        speedPositive = 0.15;
+        speedPositive = 0.11;
     }
     if (keys['KeyW'] || directionUp) {
         playerBody.position.vadd(direction.multiplyScalar(speedPositive), playerBody.position);
@@ -81,22 +80,18 @@ export function moveDirection(keys, playerBody, direction, camera) {
 export function onKeyDown(event, keys, playerBody, controls, jumpSpeed, raycasterColitions, elements) {
     keys[event.code] = true;
 
-    if (event.code === 'Space' || mobileJump) {
-
+    if (event.code === 'Space') {
         const intersects = raycasterColitions.intersectObjects(elements);
 
         if (intersects.length > 0) {
             const intersect = intersects[0];
-            console.log(intersect)
             const vector3Raycast = new Vector3(intersect.point.x, intersect.point.y, intersect.point.z)
             const distance = vector3Raycast.distanceTo(playerBody.position);
 
-            if (distance > 1 || intersect.point.y-playerBody.position.y > 0) {
+            if (distance > 1.2 || intersect.point.y - playerBody.position.y > 0) {
                 return;
             }
-
             playerBody.velocity.y = jumpSpeed;
-            mobileJump = false;
         }
     }
 
@@ -242,8 +237,8 @@ for (let index = 0; index < itemsBar.length; index++) {
     })
 }
 
-export function setMobileJump() {
-    mobileJump = true;
+export function setMobileJump(jumpSpeed, playerBody) {
+    playerBody.velocity.y = jumpSpeed;
 }
 
 function setMobileSprint() {

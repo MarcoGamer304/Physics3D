@@ -11,7 +11,6 @@ import { Vector3, Raycaster, WebGLRenderTarget } from 'three';
 import * as CANNON from 'cannon-es';
 import { DeviceController } from "../../tools/Device.js";
 import Debugger from "../../tools/debbuger.js";
-import PlaneColitions from "../../components/shapes/colitions/planeColition.js";
 import PlayerColitions from "../../components/shapes/colitions/playerColitions.js";
 import thread from "../../essentials/gameLoop/thread.js";
 import { onWindowResize } from "../../tools/resizeWindow.js";
@@ -19,7 +18,8 @@ import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed, setMobile
 import Music from '../../components/music/music.js'
 import PortalCircle from "../../components/shapes/portalCircle.js";
 import { getData } from "../../essentials/BackendMethods/Php/fetchMethods.js";
-
+import PlaneConstructor from "../../components/shapes/PlaneColitions.js";
+import { buildLevel1 } from "./level1.js";
 /*
 TASKS
 1. Implementar portales (triggers de tp)
@@ -38,12 +38,14 @@ FIXES
 let terrainPhp = [];
 let buildsAdminPhp = [];
 let timePlayed = Number();
+let globalLevel = Number(0);
 
 function init() {
     timePlayed += Date.now();
 
-    const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
+    const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 1500).getCamera();
     camera.position.set(40, 3, 30);
+    camera.lookAt(0,0,0)
     Music(camera);
 
     const raycaster = new Raycaster();
@@ -54,7 +56,6 @@ function init() {
     const controls = DeviceController(camera, renderer);
     const direction = new Vector3();
 
-    PlaneColitions(world);
     world.gravity.set(0, -9.82, 0);
 
     let itemSelect;
@@ -62,6 +63,7 @@ function init() {
     let canJump = true;
     let jumpSpeed = 6;
     let isJumping = false;
+    
 
     //Player Mesh and colitions
     const playerMesh = new Cube([40, 2, 30], "../../../public/textures/wood.jpg", 1).getMesh();
@@ -77,7 +79,7 @@ function init() {
 
     //Portal1
     const portalRenderTarget1 = new WebGLRenderTarget(512, 512);
-    scene.add(new CubeMesh([93, 2.5, 153], "../../../public/textures/wood.jpg", 2, world).getMesh());
+    scene.add(new Cube([93, 2.5, 153], "../../../public/textures/wood.jpg", 2).getMesh());
     const portalLevel1 = new PortalCircle([93.51, 2.5, 153], portalRenderTarget1).getMesh();
     portalLevel1.index = 0;
     portalLevel1.rotateY(-29.84)
@@ -90,18 +92,19 @@ function init() {
 
     //Portal2
     const portalRenderTarget2 = new WebGLRenderTarget(512, 512);
-    scene.add(new CubeMesh([93, 2.5, 155], "../../../public/textures/wood.jpg", 2, world).getMesh());
+    scene.add(new Cube([93, 2.5, 155], "../../../public/textures/wood.jpg", 2).getMesh());
     const portalLevel2 = new PortalCircle([93.51, 2.5, 155], portalRenderTarget2).getMesh();
     portalLevel2.index = 1;
-    portalLevel2.rotateY(-29.84)
+    portalLevel2.rotateY(-29.84);
     scene.add(portalLevel2)
 
     const portalCamera2 = new Camera(90, 0.5, 0.01, 500).getCamera();
-    portalCamera2.position.set(150, 10, 90);
+    portalCamera2.position.set(-60, 80, 650);
+    portalCamera2.lookAt(400,0,0);
     portalLevel2.add(portalCamera2);
     //
 
-    const planeFloor = new Plane([150, 0.5, 150], .5, "../../../public/textures/dirt.png").getMesh();
+    const planeFloor = new Plane([150, 0.5, 150], .5, "../../../public/textures/dirt.png", 0, [300, 300], world).getMesh();
     scene.add(planeFloor);
 
     //const randomMap = generateTerrain(300, 300)
@@ -112,19 +115,23 @@ function init() {
     const buildAdmin = new Terrain(buildsAdminPhp, "../../../public/textures/brick_black.png", world, playerBody, 2);
     scene.add(buildAdmin.getMesh());
 
+        
     //colisiones iniciales del raycast de la malla del terreno y suelo
-    const elements = [planeFloor, terrain.getMesh(), buildAdmin.getMesh()];
+    let elements = [planeFloor, terrain.getMesh(), buildAdmin.getMesh()];
+    
+    //nivel 1
+    const blockToPush = new CubeMesh([360, 60, 165], "../../../public/textures/brick_black.png", 3, world, 100, 2);
+    buildLevel1(world,scene,elements,blockToPush);
     //
     //Ligths
     scene.add(ambientLigth);
     scene.add(directionalLight);
     directionalLight.position.set(10, 10, 10);
     //
-
     document.getElementById("container3D").appendChild(renderer.domElement);
 
-    thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, portalCamera1, portalCamera2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions);
-
+    thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, portalCamera1, portalCamera2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush);
+    
     const cameraCenter = document.getElementById('camera-center');
     const deleteMobile = document.getElementById('delete-btn')
     const buildMobile = document.getElementById('build-btn')
@@ -140,9 +147,8 @@ function init() {
     })
 
     cameraCenter.addEventListener('touchstart', (event) => {
-        onKeyDown(event, keys, playerBody, controls, jumpSpeed);
-        setMobileJump();
-    }, { passive: true })
+        setMobileJump(jumpSpeed, playerBody);
+    })
 
     document.addEventListener('keydown', (event) => {
         onKeyDown(event, keys, playerBody, controls, jumpSpeed, raycasterCollitions, elements);
@@ -178,6 +184,14 @@ document.addEventListener("DOMContentLoaded", () => {
         init();
     });
 })
+
+export function setLevel(level){
+    globalLevel = level;
+}
+
+export function getLevel(){
+    return globalLevel;
+}
 
 
 

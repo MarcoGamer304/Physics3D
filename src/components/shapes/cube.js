@@ -18,6 +18,11 @@ class Cube {
     getMesh() {
         return this.cube;
     }
+    
+    reset(x,y,z){
+        this.body.position.set(x,y,z);
+        this.body.velocity.set(0,0,0);     
+    }
 }
 
 export default Cube;
