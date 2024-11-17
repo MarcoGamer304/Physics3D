@@ -44,4 +44,10 @@ function AddBlock(world, scene, elements, raycaster, itemSelect, playerBody) {
     }
 }
 
+document.addEventListener('keydown', (event) => {
+    if (event.code === 'KeyP') {
+     console.log(JSON.stringify(newBlocksArray, ""));
+    }
+})
+
 export default AddBlock

@@ -2,8 +2,8 @@ import { BoxGeometry, MeshBasicMaterial, Mesh, DoubleSide, TextureLoader, Linear
 import { Body, Box, Vec3, Quaternion } from 'cannon-es';
 
 class PlaneConstructor {
-    constructor(positions = [0, 0, 0], rotation = 0.5, texturePath = "", rotationY = 0, size = [5, 5], world) {
-        const geometry = new BoxGeometry(size[0], 0.1, size[1]);
+    constructor(positions = [0, 0, 0], texturePath = "", rotation = [.5, 0, 0], size = [5, 5], world) {
+        const geometry = new BoxGeometry(size[0], .6, size[1]);
 
         const textureLoader = new TextureLoader();
         const texture = textureLoader.load(texturePath, (texture) => {
@@ -13,11 +13,12 @@ class PlaneConstructor {
 
         const material = new MeshBasicMaterial({ map: texture, wireframe: false, side: DoubleSide });
         this.plane = new Mesh(geometry, material);
-        this.plane.rotation.x = Math.PI * rotation;
-        this.plane.rotation.y = Math.PI - rotationY;
+        this.plane.rotation.x = Math.PI * rotation[0];
+        this.plane.rotation.y = Math.PI * rotation[1];
+        this.plane.rotation.z = Math.PI * rotation[2];
         this.plane.position.set(positions[0], positions[1], positions[2]);
 
-        const terrainShape = new Box(new Vec3(size[0] / 2, 0.05, size[1] / 2));
+        const terrainShape = new Box(new Vec3(size[0] / 2, .3, size[1] / 2));
         const terrainBody = new Body({
             mass: 0,
             position: new Vec3(positions[0], positions[1], positions[2]),
@@ -25,7 +26,7 @@ class PlaneConstructor {
         });
 
         const cannonRotation = new Quaternion();
-        cannonRotation.setFromEuler(Math.PI * rotation, rotationY, 0, 'XYZ');
+        cannonRotation.setFromEuler(Math.PI * rotation[0], Math.PI * rotation[1], Math.PI * rotation[2], 'XYZ');
         terrainBody.quaternion.copy(cannonRotation);
 
         world.addBody(terrainBody);

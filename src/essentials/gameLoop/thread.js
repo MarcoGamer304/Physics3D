@@ -18,7 +18,7 @@ if (isPortrait) {
     width = window.innerWidth * 20 / 100 < 200 ? 100 : 200;
 }
 
-function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush) {
+function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles) {
 
     const animate = () => {
         moveDirection(keys, playerBody, direction, camera);
@@ -37,10 +37,11 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
         camera.position.y += .5;
 
         minimap.position.set(playerBody.position.x, playerBody.position.y + 60, playerBody.position.z);
-        //cannonDebugger.update();
+        cannonDebugger.update();
         terrain.update();
         buildAdmin.update();
         blockToPush.update();
+        arboles.update();
         
         portalCollitions(playerBody, [portalLevel1, portalLevel2]);
         

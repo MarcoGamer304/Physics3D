@@ -1,6 +1,6 @@
 import { PlaneGeometry, MeshBasicMaterial, Mesh, MeshStandardMaterial, DoubleSide,TextureLoader, LinearMipmapLinearFilter } from 'three'
 import { Body, Box, Vec3, Quaternion} from 'cannon-es';
-class Plane {
+class Floor {
     constructor(positions=[0,0,0], rotation = .5, texturePath="", rotationY= 0, size =[5,5], world) {
         const geometry = new PlaneGeometry(size[0], size[1]);
 
@@ -11,10 +11,10 @@ class Plane {
         });
 
         const material = new MeshBasicMaterial({ map: texture, wireframe: false, side: DoubleSide});
-        this.plane = new Mesh(geometry, material);
-        this.plane.rotation.x = Math.PI * rotation;
-        this.plane.rotation.y = Math.PI - rotationY;
-        this.plane.position.set(positions[0], positions[1], positions[2]);
+        this.floor = new Mesh(geometry, material);
+        this.floor.rotation.x = Math.PI * rotation;
+        this.floor.rotation.y = Math.PI - rotationY;
+        this.floor.position.set(positions[0], positions[1], positions[2]);
 
         const terrainShape = new Box(new Vec3(size[0]/2,0, size[1]/2));
         const terrainBody = new Body({
@@ -28,7 +28,7 @@ class Plane {
     }
 
     getMesh() {
-        return this.plane;
+        return this.floor;
     }
 }
-export default Plane;
+export default Floor;
