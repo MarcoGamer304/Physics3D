@@ -18,7 +18,7 @@ export default function AudioPlayer(camera) {
         });
     }
 
-    document.addEventListener('click', () => {
+    document.addEventListener('keydown', () => {
         if (!sound.isPlaying) {
             randomTrack();
         }

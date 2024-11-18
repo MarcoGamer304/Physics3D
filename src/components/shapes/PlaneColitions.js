@@ -19,7 +19,7 @@ class PlaneConstructor {
         this.plane.position.set(positions[0], positions[1], positions[2]);
 
         const terrainShape = new Box(new Vec3(size[0] / 2, .3, size[1] / 2));
-        const terrainBody = new Body({
+        this.terrainBody = new Body({
             mass: 0,
             position: new Vec3(positions[0], positions[1], positions[2]),
             shape: terrainShape,
@@ -27,13 +27,39 @@ class PlaneConstructor {
 
         const cannonRotation = new Quaternion();
         cannonRotation.setFromEuler(Math.PI * rotation[0], Math.PI * rotation[1], Math.PI * rotation[2], 'XYZ');
-        terrainBody.quaternion.copy(cannonRotation);
+        this.terrainBody.quaternion.copy(cannonRotation);
 
-        world.addBody(terrainBody);
+        world.addBody(this.terrainBody);
     }
 
     getMesh() {
         return this.plane;
+    }
+
+    getBody() {
+        return this.plane;
+    }
+
+    update() {
+        this.plane.position.copy(this.terrainBody.position);
+        this.plane.quaternion.copy(this.terrainBody.quaternion);
+    }
+
+    reset(x, y, z) {
+        this.terrainBody.position.set(x, y, z);
+        this.terrainBody.velocity.set(0, 0, 0);
+    }
+
+    moveNegative(x = [0, 0.01], y = [0, 0.01], z = [0, 0.01]) {
+        if (x[0]) {
+            this.terrainBody.position.x -= x[1];
+        }
+        if (y[0]) {
+            this.terrainBody.position.y -= y[1];
+        }
+        if (z[0]) {
+            this.terrainBody.position.z -= z[1];
+        }
     }
 }
 

@@ -18,7 +18,7 @@ if (isPortrait) {
     width = window.innerWidth * 20 / 100 < 200 ? 100 : 200;
 }
 
-function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles) {
+function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles, wall, wall2, cubeGravity, cubeGravity2, portalRenderTarget2Return, portalLevel2Return, portalCamera2Return, portalRenderTarget1Return, portalLevel1Return, portalCamera1Return) {
 
     const animate = () => {
         moveDirection(keys, playerBody, direction, camera);
@@ -29,7 +29,7 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
 
         world.step(1 / 60);
 
-        resetItems(playerBody, blockToPush);
+        resetItems(playerBody, blockToPush, camera);
         playerMesh.position.copy(playerBody.position);
         playerMesh.quaternion.copy(playerBody.quaternion);
 
@@ -42,10 +42,15 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
         buildAdmin.update();
         blockToPush.update();
         arboles.update();
-        
-        portalCollitions(playerBody, [portalLevel1, portalLevel2]);
-        
-        rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, cameraLevel1, cameraLevel2, camera);
+        wall.update();
+        wall2.update();
+        cubeGravity.update();
+        cubeGravity2.update();
+
+        portalCollitions(playerBody, [portalLevel1, portalLevel2, portalLevel2Return, portalLevel1Return], camera);
+        level2Colitions(playerBody, [wall, wall2], [cubeGravity, cubeGravity2]);
+
+        rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, cameraLevel1, cameraLevel2, camera, portalRenderTarget2Return, portalCamera2Return, portalRenderTarget1Return, portalCamera1Return);
         camerasAnimated([cameraLevel1, cameraLevel2]);
 
         requestAnimationFrame(animate);
@@ -53,7 +58,7 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
     animate();
 }
 
-function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, cameraLevel1, cameraLevel2, camera) {
+function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, cameraLevel1, cameraLevel2, camera, portalRenderTarget2Return, portalCamera2Return, portalRenderTarget1Return, portalCamera1Return) {
     //CubeCamera
     renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.render(scene, camera);
@@ -66,9 +71,17 @@ function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, min
     renderer.setRenderTarget(portalRenderTarget1);
     renderer.render(scene, cameraLevel1);
     renderer.setRenderTarget(null);
+    //portal 1 return
+    renderer.setRenderTarget(portalRenderTarget1Return);
+    renderer.render(scene, portalCamera1Return);
+    renderer.setRenderTarget(null);
     //portal2
     renderer.setRenderTarget(portalRenderTarget2);
     renderer.render(scene, cameraLevel2);
+    renderer.setRenderTarget(null);
+    //portal 2 return
+    renderer.setRenderTarget(portalRenderTarget2Return);
+    renderer.render(scene, portalCamera2Return);
     renderer.setRenderTarget(null);
 
     renderer.setScissorTest(false);
@@ -76,17 +89,17 @@ function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, min
 
 function cameraAnimation(camera, camMove) {
     if (camMove) {
-        if (camera.position.y >= 4) {
+        if (camera.position.y > 4) {
             camera.position.y -= 0.01;
-            camera.position.z -= 0.02;
+            camera.position.z -= 0.01;
             camera.rotation.y -= 0.0001;
         } else {
             camMove = false;
         }
     } else {
-        if (camera.position.y <= 6) {
+        if (camera.position.y <= 4) {
             camera.position.y += 0.01;
-            camera.position.z += 0.02;
+            camera.position.z += 0.01;
             camera.rotation.y += 0.0001;
         } else {
             camMove = true;
@@ -100,25 +113,31 @@ function camerasAnimated(cameras) {
     cam2Move = cameraAnimation(cameras[1], cam2Move);
 }
 
-function portalCollitions(playerBody, arrayPortales) {
+function portalCollitions(playerBody, arrayPortales, camera) {
     if (!arrayPortales) return;
 
     arrayPortales.forEach(element => {
         const distance = playerBody.position.distanceTo(element.position);
         if (distance <= 1) {
-            console.log("portal: " + element.index);
             if (element.index === 1) {
                 playerBody.position.set(400, 50, 165);
                 setLevel(1);
+            } else if (element.index == 1.1) {
+                playerBody.position.set(100, 15, 154);
+                setLevel(0);
             } else if (element.index === 0) {
-                playerBody.position.set(150, 15, 200);
+                playerBody.position.set(-50, 50, 165);
+                camera.lookAt(new Vector3(-70, 44, 900))
                 setLevel(2);
+            }else if (element.index === 0.1) {
+                playerBody.position.set(100, 15, 154);
+                setLevel(0);
             }
         }
     });
 }
 
-function resetItems(playerBody,blockToPush) {
+function resetItems(playerBody, blockToPush, camera) {
     switch (getLevel()) {
         case 1:
             if (playerBody.position.y <= -10) {
@@ -129,8 +148,9 @@ function resetItems(playerBody,blockToPush) {
             }
             break;
         case 2:
-            if (playerBody.position.y <= 30) {
-                playerBody.position.set(360, 70, 165)
+            if (playerBody.position.y <= -10) {
+                playerBody.position.set(-50, 50, 165);
+                camera.lookAt(new Vector3(-70, 44, 900))
             }
             break;
         case 3:
@@ -145,6 +165,29 @@ function resetItems(playerBody,blockToPush) {
             }
             break;
     }
+}
+
+function level2Colitions(playerBody, walllv2, cubesl2) {
+    if (!walllv2) return;
+    if (!cubesl2) return;
+
+    walllv2.forEach(wall => {
+        const distance = wall.getBody().position.distanceTo(playerBody.position);
+        if (distance <= 5) {
+            wall.moveNegative([1, 0.02], [0, 0.01], [0, 0.01]);
+        } else {
+            wall.reset(wall.coords[0], wall.coords[1], wall.coords[2]);
+        }
+    });
+
+    cubesl2.forEach(cube => {
+        const distance = cube.getMesh().position.distanceTo(playerBody.position);
+        if (distance <= 3) {
+            cube.moveNegative([0, 0.01], [1, 0.01], [0, 0.01]);
+        } else {
+            cube.reset(cube.coords[0], cube.coords[1], cube.coords[2]);
+        }
+    })
 }
 
 export default thread

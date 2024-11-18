@@ -34,9 +34,22 @@ class CubeMesh {
         this.cube.position.copy(this.body.position);
         this.cube.quaternion.copy(this.body.quaternion);
     }
+
     reset(x,y,z){
         this.body.position.set(x,y,z);
         this.body.velocity.set(0,0,0);     
+    }
+
+    moveNegative(x = [0, 0.01], y = [0, 0.01], z = [0, 0.01]) {
+        if (x[0]) {
+            this.body.position.x -= x[1];
+        }
+        if (y[0]) {
+            this.body.position.y -= y[1];
+        }
+        if (z[0]) {
+            this.body.position.z -= z[1];
+        }
     }
 
 }
