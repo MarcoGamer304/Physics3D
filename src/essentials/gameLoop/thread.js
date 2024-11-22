@@ -37,7 +37,7 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
         camera.position.y += .5;
 
         minimap.position.set(playerBody.position.x, playerBody.position.y + 60, playerBody.position.z);
-        cannonDebugger.update();
+        //cannonDebugger.update();
         terrain.update();
         buildAdmin.update();
         blockToPush.update();

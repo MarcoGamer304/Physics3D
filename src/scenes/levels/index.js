@@ -10,7 +10,7 @@ import Terrain from '../../components/shapes/terrain.js'
 import PlaneConstructor from "../../components/shapes/PlaneColitions.js";
 import { Vector3, Raycaster, WebGLRenderTarget } from 'three';
 import * as CANNON from 'cannon-es';
-import { DeviceController } from "../../tools/Device.js";
+import { DeviceController } from "../../tools/device.js";
 import Debugger from "../../tools/debbuger.js";
 import PlayerColitions from "../../components/shapes/colitions/playerColitions.js";
 import thread from "../../essentials/gameLoop/thread.js";
@@ -97,7 +97,6 @@ function init() {
     //return Portal 1 camera
     const portalCamera1Return = new Camera(90, 0.5, 0.01, 1500).getCamera();
     portalCamera1Return.position.set(176.3, -41, 320);
-   
     portalLevel1Return.add(portalCamera1Return);
     //
     //Portal2
@@ -120,12 +119,13 @@ function init() {
     portalLevel2Return.index = 1.1;
     portalLevel2Return.rotateY(-29.84)
     scene.add(portalLevel2Return);
-    //
+    
     //return Portal 2 camera
     const portalCamera2Return = new Camera(90, 0.5, 0.01, 1500).getCamera();
     portalCamera2Return.position.set(24.5, -35, -455);
     portalLevel2Return.add(portalCamera2Return);
-    //
+    
+    //suelo 
     const planeFloor = new Floor([150, 0.5, 150], .5, "../../../public/textures/dirt.png", 0, [300, 300], world).getMesh();
     scene.add(planeFloor);
 
@@ -135,14 +135,15 @@ function init() {
     scene.add(arboles.getMesh());
     const troncoMesh = new Terrain(getTronco(), "../../../public/textures/log.png", world, playerBody, 2);
     scene.add(troncoMesh.getMesh());
-    //
+    
     //Generar malla de terreno
     const terrain = new Terrain(terrainPhp, "../../../public/textures/g_5.png", world, playerBody, 2);
     scene.add(terrain.getMesh());
+    
     //Construcciones por defecto
     const buildAdmin = new Terrain(buildsAdminPhp, "../../../public/textures/brick_black.png", world, playerBody, 2);
     scene.add(buildAdmin.getMesh());
-
+    
     //colisiones iniciales del raycast de la malla del terreno y suelo
     let elements = [planeFloor, terrain.getMesh(), buildAdmin.getMesh(), arboles.getMesh(), troncoMesh.getMesh()];
 

@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client'
-import { detectDeviceType } from '../../tools/Device'; 
+import { detectDeviceType } from '../../tools/device'; 
 
-const socket = io.connect('http://localhost:3000/');
+const socket = io.connect('http://expresssocketio-production-211e.up.railway.app');
 const menssageList = document.getElementById('menssageList')
 const form = document.getElementById('myForm');
 

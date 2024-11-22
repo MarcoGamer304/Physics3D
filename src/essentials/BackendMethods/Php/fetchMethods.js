@@ -1,6 +1,6 @@
 export async function getData(){
     try {
-        const response = await fetch('http://localhost:8000/api/terrain/1', {
+        const response = await fetch('http://192.168.100.143/api/terrain/6', {
             method: 'GET'
         });
         let result = await response.json();
