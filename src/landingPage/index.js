@@ -1,3 +1,5 @@
+import { register, login } from "../essentials/BackendMethods/Php/fetchMethods";
+
 const banner = document.getElementById('banner')
 const windowHeigth = window.innerHeight;
 const windowWidth = window.innerHeight;
@@ -7,9 +9,18 @@ banner.style.Width = windowWidth + 'px';
 
 const loginBtn = document.getElementById('loginBtn');
 const loginModal = document.getElementById('loginModal');
-const loginClose = document.getElementById('loginClose')
-const loginForm = document.getElementById('loginForm')
-const playNow = document.getElementById('play-now')
+const loginClose = document.getElementById('loginClose');
+const loginForm = document.getElementById('loginForm');
+const playNow = document.getElementById('play-now');
+
+const btnRegister = document.getElementById('btnRegister');
+const registerClose = document.getElementById('registerClose');
+const registerModal = document.getElementById('registerModal');
+const returnLogin = document.getElementById('returnLogin');
+const registerForm = document.getElementById('registerForm');
+
+const inputRegisterUser = document.getElementById('input-register-user');
+const inputRegisterEmail = document.getElementById('input-register-email');
 
 const canvas = document.getElementById('canvasFrame');
 const sections = document.getElementsByClassName('section');
@@ -18,7 +29,48 @@ let startY = 0;
 let onCanvas;
 
 localStorage.clear();
-loginBtn.innerText = localStorage.getItem('username') || 'Login';
+
+btnRegister.addEventListener('click', () => {
+    registerModal.showModal();
+    loginModal.close();
+}),
+
+    registerClose.addEventListener('click', () => {
+        registerModal.close();
+    });
+
+returnLogin.addEventListener('click', () => {
+    registerModal.close();
+    loginModal.showModal();
+})
+
+registerForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    inputRegisterEmail.style.background = 'white';
+    inputRegisterUser.style.background = 'white';
+
+    let response = await register({
+        "username": document.getElementById('input-register-user').value,
+        "password": document.getElementById('input-register-pass').value,
+        "contry": document.getElementById('input-register-country').value,
+        "email": document.getElementById('input-register-email').value,
+        "phone": document.getElementById('input-register-languge').value,
+        "language": document.getElementById('input-register-phone').value
+    });
+
+    if (response.acces_token) {
+        registerModal.close();
+    }
+    if (response.errors.username) {
+        console.log('usuario incorrecto')
+        inputRegisterUser.style.background = 'red';
+    }
+    if (response.errors.email) {
+        console.log('email incorrecto')
+        inputRegisterEmail.style.background = 'red';
+    }
+})
 
 loginBtn.addEventListener('click', () => {
     loginModal.showModal();
@@ -26,28 +78,35 @@ loginBtn.addEventListener('click', () => {
 
 loginClose.addEventListener('click', () => {
     loginModal.close()
-})
+});
 
-loginForm.addEventListener('submit', (event) => {
+loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    try {
+        let response = await login({
+            "username": document.getElementById('input-login-user').value,
+            "password": document.getElementById('input-login-pass').value
+        });
+        if (response.token) { 
+            localStorage.setItem('token', response.token);
+            localStorage.setItem('username', response.user);
+        } 
+    } catch (error) {
+        console.error('Logging error:', error);
+    }
 
-    const inputUser = document.getElementById('input-login-user')
-    localStorage.setItem('username', inputUser.value);
-    inputUser.value = '';
+    document.getElementById('input-login-user').value = '';
+    document.getElementById('input-login-pass').value = '';
 
-    const inputPass = document.getElementById('input-login-pass')
-    localStorage.setItem('password', inputPass.value);
-    inputPass.value = '';
-
-    loginBtn.innerText = localStorage.getItem('username');
+    loginBtn.innerText = localStorage.getItem('username') || 'Login';
     loginModal.close();
-})
+});
 
 playNow.addEventListener('click', () => {
-    if (localStorage.getItem("username") === "" || localStorage.getItem("username") === null) {
+    if (!localStorage.getItem("token")) {
         loginModal.showModal();
     } else {
-      window.location.href = '../../game.html';
+        window.location.href = '../../game.html';
     }
 })
 

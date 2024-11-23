@@ -1,7 +1,7 @@
 @use '../abstracts/mixins' as *;
 @use '../abstracts/variables' as *;
 
-#loginModal {
+#loginModal, #registerModal {
     min-width: 20vw;
     max-width: 80vw;
     border-radius: $fs-nnm;
@@ -21,11 +21,11 @@
     }
 }
 
-#loginModal p {
+#loginModal p ,#registerModal p{
     margin: $m-nn;
 }
 
-#loginClose {
+#loginClose, #registerClose {
     cursor: pointer;
 }
 
@@ -43,7 +43,7 @@
     padding-left: $fs-nnm;
 }
 
-#loginSubmit {
+#loginSubmit, #registerSubmit {
     min-width: 100%;
     background-color: $clr-black;
     border-radius: $fs-nmx;
@@ -68,11 +68,11 @@
     margin-top: $mt-nm;
 }
 
-#external-login {
+#external-login, #external-login-register {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin-bottom: $mt-nm;
+    margin-bottom: $mt-nm; 
 }
 
 .networks {

@@ -157,7 +157,51 @@
       </div>
       <button id="loginSubmit">Send</button>
     </form>
-    <span class="createAccount">Looking to<button class="refactorBtn clrBlue">create an account ?</button></span>
+    <span class="createAccount">Looking to<button class="refactorBtn clrBlue" id="btnRegister">create an account ?</button></span>
+  </dialog>
+
+  <!-- register -->
+
+  <dialog id="registerModal">
+    <div class="modal-header">
+      <p><Strong>Login with</Strong></p>
+      <span id="registerClose">X</span>
+    </div>
+
+    <div id="external-login-register">
+      <img src="./public/svg/google-logo.svg" width="35vw" alt="svg" class="networks">
+      <img src="./public/svg/github-logo.svg" width="35vw" alt="svg" class="networks">
+      <img src="./public/svg/facebook-logo.svg" width="35vw" alt="svg" class="networks">
+    </div>
+
+    <div class="separator">
+      <span class="line"></span>
+      <span> or </span>
+      <span class="line"></span>
+    </div>
+
+    <form id="registerForm">
+      <div>
+        <input type="text" placeholder="Username" class="input" id="input-register-user" required>
+      </div>
+      <div>
+        <input type="Password" placeholder="Password" class="input" id="input-register-pass" required>
+      </div>
+      <div>
+        <input type="email" placeholder="Email" class="input" id="input-register-email" required>
+      </div>
+      <div>
+        <input type="text" placeholder="Country" class="input" id="input-register-country" required>
+      </div>
+      <div>
+        <input type="text" placeholder="Language" class="input" id="input-register-languge" required>
+      </div>
+      <div>
+        <input type="number" placeholder="Phone" class="input" id="input-register-phone" required>
+      </div>
+      <button id="registerSubmit">Send</button>
+    </form>
+    <span class="createAccount">Looking to<button class="refactorBtn clrBlue" id="returnLogin">loggin an account ?</button></span>
   </dialog>
 
 </body>

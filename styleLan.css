@@ -64,7 +64,7 @@ canvas {
   background-color: hsl(217, 8%, 19%);
 }
 
-#loginModal {
+#loginModal, #registerModal {
   min-width: 20vw;
   max-width: 80vw;
   border-radius: 0.4rem;
@@ -72,26 +72,26 @@ canvas {
   padding: 2vh;
 }
 @media only screen and (max-width: 767px) {
-  #loginModal {
+  #loginModal, #registerModal {
     min-width: 75vw;
   }
 }
 @media only screen and (min-width: 768px) and (max-width: 979px) {
-  #loginModal {
+  #loginModal, #registerModal {
     min-width: 45vw;
   }
 }
 @media only screen and (min-width: 1200px) {
-  #loginModal {
+  #loginModal, #registerModal {
     min-width: 20vw;
   }
 }
 
-#loginModal p {
+#loginModal p, #registerModal p {
   margin: 0rem;
 }
 
-#loginClose {
+#loginClose, #registerClose {
   cursor: pointer;
 }
 
@@ -109,7 +109,7 @@ canvas {
   padding-left: 0.4rem;
 }
 
-#loginSubmit {
+#loginSubmit, #registerSubmit {
   min-width: 100%;
   background-color: hsl(0, 0%, 0%);
   border-radius: 0.6rem;
@@ -134,7 +134,7 @@ canvas {
   margin-top: 2vh;
 }
 
-#external-login {
+#external-login, #external-login-register {
   display: flex;
   justify-content: space-evenly;
   align-items: center;

@@ -25,13 +25,13 @@ import { buildLevel2 } from "./level2.js";
 
 /*
 TASKS
-5. sesiones
-7. Implementar inventario | menus  
-9. Agregar enemigos
-
-FIXES
-1. Refactorizar removeBlocks 
-2. Ocultar y mostar el chat cuando se desea.
+5. hacer las estadisticas del usuario e implementarlas, a su ves crear un boton para guardar la partida y enviar las stats
+6. dar estilo al chat
+7. hacer una tabla de loggs de usuarios
+8. hacer un index para las estadisticas de juego
+9. blockear la construccion de bloque no recolectados y poner un bloque giratorio al final de los niveles que lo active
+10. agregar mas soporte a los comandos de voz  | menu | guardarPartida | estadisticas | etc.
+11. menus  
 */
 
 let terrainPhp = [];
@@ -121,12 +121,12 @@ function init() {
     portalLevel2Return.index = 1.1;
     portalLevel2Return.rotateY(-29.84)
     scene.add(portalLevel2Return);
-    
+
     //return Portal 2 camera
     const portalCamera2Return = new Camera(90, 0.5, 0.01, 1500).getCamera();
     portalCamera2Return.position.set(24.5, -35, -455);
     portalLevel2Return.add(portalCamera2Return);
-    
+
     //suelo 
     const planeFloor = new Floor([150, 0.5, 150], .5, "../../../public/textures/dirt.png", 0, [300, 300], world).getMesh();
     scene.add(planeFloor);
@@ -137,15 +137,15 @@ function init() {
     scene.add(arboles.getMesh());
     const troncoMesh = new Terrain(tree_trunk, "../../../public/textures/log.png", world, playerBody, 2);
     scene.add(troncoMesh.getMesh());
-    
+
     //Generar malla de terreno
     const terrain = new Terrain(terrainPhp, "../../../public/textures/g_5.png", world, playerBody, 2);
     scene.add(terrain.getMesh());
-    
+
     //Construcciones por defecto
     const buildAdmin = new Terrain(buildsAdminPhp, "../../../public/textures/brick_black.png", world, playerBody, 2);
     scene.add(buildAdmin.getMesh());
-    
+
     //colisiones iniciales del raycast de la malla del terreno y suelo
     let elements = [planeFloor, terrain.getMesh(), buildAdmin.getMesh(), arboles.getMesh(), troncoMesh.getMesh()];
 
@@ -215,17 +215,21 @@ function init() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    getData().then(terrain => {
-        try {
-            terrainPhp = JSON.parse(terrain.terrain_base);
-            buildsAdminPhp = JSON.parse(terrain.build_admin);
-            tree_trunk = JSON.parse(terrain.tree_trunk);
-            tree_leaves = JSON.parse(terrain.tree_leaves);
-        } catch (error) {
-            console.error('Error al convertir el string a array:', error);
-        }
-        init();
-    });
+    if (!localStorage.getItem("token")) {
+        window.location.href = '../../../index.html';
+    } else {
+        getData().then(terrain => {
+            try {
+                terrainPhp = JSON.parse(terrain.terrain_base);
+                buildsAdminPhp = JSON.parse(terrain.build_admin);
+                tree_trunk = JSON.parse(terrain.tree_trunk);
+                tree_leaves = JSON.parse(terrain.tree_leaves);
+            } catch (error) {
+                console.error('Error al convertir el string a array:', error);
+            }
+            init();
+        });
+    }
 })
 
 export function setLevel(level) {
