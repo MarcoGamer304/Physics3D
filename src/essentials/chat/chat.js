@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
-import { detectDeviceType } from '../../tools/device'; 
+import { detectDeviceType } from '../../tools/Device'; 
 
 const socket = io.connect('http://expresssocketio-production-211e.up.railway.app');
 const menssageList = document.getElementById('menssageList')

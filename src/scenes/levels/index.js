@@ -10,7 +10,7 @@ import Terrain from '../../components/shapes/terrain.js'
 import PlaneConstructor from "../../components/shapes/PlaneColitions.js";
 import { Vector3, Raycaster, WebGLRenderTarget } from 'three';
 import * as CANNON from 'cannon-es';
-import { DeviceController } from "../../tools/device.js";
+import { DeviceController } from "../../tools/Device.js";
 import Debugger from "../../tools/debbuger.js";
 import PlayerColitions from "../../components/shapes/colitions/playerColitions.js";
 import thread from "../../essentials/gameLoop/thread.js";
@@ -36,6 +36,8 @@ FIXES
 
 let terrainPhp = [];
 let buildsAdminPhp = [];
+let tree_trunk = [];
+let tree_leaves = [];
 let timePlayed = Number();
 let globalLevel = Number(0);
 
@@ -130,10 +132,10 @@ function init() {
     scene.add(planeFloor);
 
     //genera arboles y troncos para construir sus mallas
-    generateTrees(terrainPhp);
-    const arboles = new Terrain(getTrees(), "../../../public/textures/leaves.png", world, playerBody, 2);
+    //generateTrees(terrainPhp);
+    const arboles = new Terrain(tree_leaves, "../../../public/textures/leaves.png", world, playerBody, 2);
     scene.add(arboles.getMesh());
-    const troncoMesh = new Terrain(getTronco(), "../../../public/textures/log.png", world, playerBody, 2);
+    const troncoMesh = new Terrain(tree_trunk, "../../../public/textures/log.png", world, playerBody, 2);
     scene.add(troncoMesh.getMesh());
     
     //Generar malla de terreno
@@ -217,6 +219,8 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             terrainPhp = JSON.parse(terrain.terrain_base);
             buildsAdminPhp = JSON.parse(terrain.build_admin);
+            tree_trunk = JSON.parse(terrain.tree_trunk);
+            tree_leaves = JSON.parse(terrain.tree_leaves);
         } catch (error) {
             console.error('Error al convertir el string a array:', error);
         }
