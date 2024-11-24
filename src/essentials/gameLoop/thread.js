@@ -1,7 +1,8 @@
 import { Vector3, Clock } from 'three';
 import { moveDirection } from '../controlls/controlls';
 import { Vec3 } from 'cannon-es';
-import { setLevel, getLevel } from '../../scenes/levels';
+import { setLevel, getLevel, increasefalls, levelsCompleted } from '../../scenes/levels';
+
 const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
 let height;
@@ -125,19 +126,23 @@ function portalCollitions(playerBody, arrayPortales, camera) {
             } else if (element.index == 1.1) {
                 playerBody.position.set(100, 15, 154);
                 setLevel(0);
+                levelsCompleted();
             } else if (element.index === 0) {
                 playerBody.position.set(-50, 50, 165);
                 camera.lookAt(new Vector3(-70, 44, 900))
                 setLevel(2);
-            }else if (element.index === 0.1) {
+            } else if (element.index === 0.1) {
                 playerBody.position.set(100, 15, 154);
                 setLevel(0);
+                levelsCompleted();
             }
         }
     });
 }
 
 function resetItems(playerBody, blockToPush, camera) {
+    if (playerBody.position.y <= -10) { increasefalls() }
+    
     switch (getLevel()) {
         case 1:
             if (playerBody.position.y <= -10) {

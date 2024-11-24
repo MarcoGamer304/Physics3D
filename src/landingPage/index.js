@@ -87,8 +87,9 @@ loginForm.addEventListener('submit', async (event) => {
             "username": document.getElementById('input-login-user').value,
             "password": document.getElementById('input-login-pass').value
         });
+
         if (response.token) { 
-            localStorage.setItem('token', response.token);
+            localStorage.setItem('token', response.token.split('|')[1]);
             localStorage.setItem('username', response.user);
         } 
     } catch (error) {

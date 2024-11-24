@@ -2,6 +2,7 @@ import AddBlock from "../../essentials/mecanics/addBlocks.js";
 import RemoveBlock from "../../essentials/mecanics/removeBlocks.js";
 import { Vector3 } from 'three';
 import { detectDeviceType } from "../../tools/Device.js";
+import { saveData } from "../../scenes/levels/index.js";
 
 let item;
 let pressIzq = false;
@@ -278,3 +279,9 @@ cameraLeft.addEventListener('touchend', () => { cameraDirection('left', cameraRe
 
 cameraRigth.addEventListener('touchstart', () => { cameraDirection('right', cameraRef, true) }, { passive: true });
 cameraRigth.addEventListener('touchend', () => { cameraDirection('right', cameraRef, false) }, { passive: true });
+
+document.addEventListener('keydown',async (e) => {
+    if (e.code === 'KeyG') {
+        saveData()
+    }
+})

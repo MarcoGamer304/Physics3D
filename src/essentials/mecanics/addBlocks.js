@@ -3,7 +3,7 @@ import { Vector3 } from "three";
 
 const newBlocksArray = [];
 
-function AddBlock(world, scene, elements, raycaster, itemSelect, playerBody) {
+function AddBlock(world, scene, elements, raycaster, itemSelect = "../../../public/textures/g_5.png", playerBody) {
 
     const intersects = raycaster.intersectObjects(elements);
 
@@ -31,17 +31,21 @@ function AddBlock(world, scene, elements, raycaster, itemSelect, playerBody) {
                 const newCubeFix = new CubeMesh([Math.floor(intersect.point.x), y, Math.floor(intersect.point.z)], itemSelect, 1, world).getMesh();
                 scene.add(newCubeFix);
                 elements.push(newCubeFix);
-                newBlocksArray.push([newCubeFix.position.x, newCubeFix.position.y, newCubeFix.position.z]);
+                newBlocksArray.push([newCubeFix.position.x, newCubeFix.position.y, newCubeFix.position.z, itemSelect]);
             }
 
         } else {
             if (y <= 40) {
                 scene.add(newCube);
                 elements.push(newCube);
-                newBlocksArray.push([newCube.position.x, newCube.position.y, newCube.position.z]);
+                newBlocksArray.push([newCube.position.x, newCube.position.y, newCube.position.z, itemSelect]);
             }
         }
     }
+}
+
+export function getUserBuild(){
+    return JSON.stringify(newBlocksArray, "");
 }
 
 document.addEventListener('keydown', (event) => {

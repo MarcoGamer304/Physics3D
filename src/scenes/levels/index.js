@@ -22,7 +22,9 @@ import { getData } from "../../essentials/BackendMethods/Php/fetchMethods.js";
 import { generateTrees, getTrees, getTronco } from "../../tools/generateTrees.js";
 import { buildLevel1 } from "./level1.js";
 import { buildLevel2 } from "./level2.js";
-
+import { updateStats } from "../../essentials/BackendMethods/Php/fetchMethods.js";
+import { secondsToTime, getMinutes } from "../../tools/parseTime.js";
+import { getUserBuild } from "../../essentials/mecanics/addBlocks.js";
 /*
 TASKS
 5. hacer las estadisticas del usuario e implementarlas, a su ves crear un boton para guardar la partida y enviar las stats
@@ -31,18 +33,26 @@ TASKS
 8. hacer un index para las estadisticas de juego
 9. blockear la construccion de bloque no recolectados y poner un bloque giratorio al final de los niveles que lo active
 10. agregar mas soporte a los comandos de voz  | menu | guardarPartida | estadisticas | etc.
-11. menus  
-*/
+11. menus 
 
+13.los coleccionables variable blocks y traer la data de la bd para inicializar las variables de juego
+*/
+let globalLevel = Number(0);
 let terrainPhp = [];
 let buildsAdminPhp = [];
 let tree_trunk = [];
 let tree_leaves = [];
-let timePlayed = Number();
-let globalLevel = Number(0);
+
+let timePlayed = Number(0);
+let score = Number(0);
+let blocksCollected = Number(1);
+let falls = Number(0);
+let totalTimePlayed = Number(0);
+let levels_completed = Number(0);
 
 function init() {
     timePlayed += Date.now();
+    totalTimePlayed += 240 * 1000;
 
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
     camera.position.set(40, 3, 30);
@@ -203,7 +213,6 @@ function init() {
     document.addEventListener('mousedown', (event) => {
         itemSelect = getItemSelect();
         mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody);
-        console.log(Date.now() - timePlayed);
     }, false);
 
     document.addEventListener('mouseup', (event) => { mouseLeaved(event) }, false
@@ -238,4 +247,30 @@ export function setLevel(level) {
 
 export function getLevel() {
     return globalLevel;
+}
+
+export async function saveData() {
+
+    let result = await updateStats({
+        "score": updateScore(),
+        "time_played": secondsToTime((((Date.now() + totalTimePlayed) - timePlayed)) / 1000),
+        "blocks_collected": blocksCollected,
+        "falls": falls,
+        "token": localStorage.getItem('token'),
+        "levels_completed": levels_completed,
+        "builds_user": getUserBuild()
+    });
+    alert(result.status === 201 ? 'save succesfully' : 'error on save');
+}
+
+export function increasefalls() {
+    falls++;
+}
+
+export function levelsCompleted() {
+    levels_completed++;
+}
+
+function updateScore() {
+    return (getMinutes(((Date.now() + totalTimePlayed) - timePlayed) / 1000) * 1) + blocksCollected * 100;   
 }
