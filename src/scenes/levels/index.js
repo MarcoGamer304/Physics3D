@@ -18,12 +18,12 @@ import { onWindowResize } from "../../tools/resizeWindow.js";
 import { onKeyDown, onKeyUp, getItemSelect, mouseLeaved, mousePressed, setMobileJump, screenPressed } from "../../essentials/controlls/controlls.js";
 import Music from '../../components/music/music.js'
 import PortalCircle from "../../components/shapes/portalCircle.js";
-import { getData } from "../../essentials/BackendMethods/Php/fetchMethods.js";
+import { getData, getStats } from "../../essentials/BackendMethods/Php/fetchMethods.js";
 import { generateTrees, getTrees, getTronco } from "../../tools/generateTrees.js";
 import { buildLevel1 } from "./level1.js";
 import { buildLevel2 } from "./level2.js";
 import { updateStats } from "../../essentials/BackendMethods/Php/fetchMethods.js";
-import { secondsToTime, getMinutes } from "../../tools/parseTime.js";
+import { secondsToTime, getMinutes, timeToMilliseconds } from "../../tools/parseTime.js";
 import { getUserBuild } from "../../essentials/mecanics/addBlocks.js";
 /*
 TASKS
@@ -52,7 +52,6 @@ let levels_completed = Number(0);
 
 function init() {
     timePlayed += Date.now();
-    totalTimePlayed += 240 * 1000;
 
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
     camera.position.set(40, 3, 30);
@@ -236,6 +235,20 @@ document.addEventListener("DOMContentLoaded", () => {
             } catch (error) {
                 console.error('Error al convertir el string a array:', error);
             }
+            getStats({ "token": localStorage.getItem('token') }).then(stats => {
+                console.log(stats.timePlayed)
+                try {
+                    score = stats.score;
+                    totalTimePlayed = timeToMilliseconds(stats.time_played);
+                    blocksCollected = stats.blocks_collected;
+                    falls = stats.falls;
+                    levels_completed = stats.levels_completed;
+                    console.log(score, blocksCollected, falls, levels_completed)
+                    //builds_user = stats.builds_user;
+                } catch (error) {
+                    console.error('Error al convertir el string a array:', error);
+                }
+            })
             init();
         });
     }
@@ -272,5 +285,5 @@ export function levelsCompleted() {
 }
 
 function updateScore() {
-    return (getMinutes(((Date.now() + totalTimePlayed) - timePlayed) / 1000) * 1) + blocksCollected * 100;   
+    return (getMinutes(((Date.now() + totalTimePlayed) - timePlayed) / 1000) * 1) + blocksCollected * 100;
 }

@@ -59,3 +59,21 @@ export async function updateStats(data) {
         console.error('Error:', err);
     }
 }
+
+
+export async function getStats(data) {
+    try {
+        const response = await fetch('http://localhost:8000/api/user/stats', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        let result = await response.json();
+        console.log(result.status)
+        return result;
+    } catch (err) {
+        console.error('Error:', err);
+    }
+}

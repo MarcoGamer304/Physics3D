@@ -16,3 +16,14 @@ export function secondsToTime(seconds) {
 export function getMinutes(seconds){
     return Math.floor((seconds % 3600) / 60);
 }
+
+export function timeToMilliseconds(time) {
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+    
+    const milliseconds = 
+        (hours * 60 * 60 * 1000) +  
+        (minutes * 60 * 1000) +   
+        (seconds * 1000); 
+    
+    return milliseconds;
+}
