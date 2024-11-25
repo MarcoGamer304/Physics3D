@@ -24,10 +24,10 @@ import { buildLevel1 } from "./level1.js";
 import { buildLevel2 } from "./level2.js";
 import { updateStats } from "../../essentials/BackendMethods/Php/fetchMethods.js";
 import { secondsToTime, getMinutes, timeToMilliseconds } from "../../tools/parseTime.js";
-import { getUserBuild } from "../../essentials/mecanics/addBlocks.js";
+import UserBuild from "../../components/shapes/userBuilds.js";
+import { setStyle } from "../../essentials/controlls/controlls.js";
 /*
 TASKS
-5. hacer las estadisticas del usuario e implementarlas, a su ves crear un boton para guardar la partida y enviar las stats
 6. dar estilo al chat
 7. hacer una tabla de loggs de usuarios
 8. hacer un index para las estadisticas de juego
@@ -42,6 +42,8 @@ let terrainPhp = [];
 let buildsAdminPhp = [];
 let tree_trunk = [];
 let tree_leaves = [];
+let newBlocksArray = [];
+let collectables = [];
 
 let timePlayed = Number(0);
 let score = Number(0);
@@ -52,6 +54,7 @@ let levels_completed = Number(0);
 
 function init() {
     timePlayed += Date.now();
+    setStyle();
 
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
     camera.position.set(40, 3, 30);
@@ -158,9 +161,18 @@ function init() {
     //colisiones iniciales del raycast de la malla del terreno y suelo
     let elements = [planeFloor, terrain.getMesh(), buildAdmin.getMesh(), arboles.getMesh(), troncoMesh.getMesh()];
 
+    if (newBlocksArray.length !== 0) {
+        const userBuilds = new UserBuild(newBlocksArray, 1, world, 40, 0, scene).getMeshes();
+        userBuilds.forEach(block => {
+            elements.push(block);
+        })
+    }
+
     //nivel 1
     const blockToPush = new CubeMesh([360, 60, 165], "../../../public/textures/brick_black.png", 3, world, 100, 1);
-    buildLevel1(world, scene, elements, blockToPush);
+    const collectableWood = new Cube([341, 41, 165], "../../../public/textures/g_5.png", .6, .6);
+    buildLevel1(world, scene, elements, blockToPush, collectableWood);
+    collectableWood.getMesh().visible = collectables[0] === false ? true : false;
 
     //nivel 2
     const wall = new PlaneConstructor([-47.8, 51.8, 193], "../../../public/textures/wood.jpg", [0.5, 0, 0.5], [7, 5], world);
@@ -171,7 +183,9 @@ function init() {
     const cubeGravity2 = new CubeMesh([-49, 46, 232], "../../../public/textures/sand.png", 2, world, 100);
     cubeGravity.coords = [-49, 48, 222];
     cubeGravity2.coords = [-49, 46, 232];
-    buildLevel2(world, scene, elements, wall.getMesh(), wall2.getMesh(), cubeGravity.getMesh(), cubeGravity2.getMesh());
+    const collectableStone = new Cube([-49, 46.3, 243], "../../../public/textures/wood.jpg", .6, .6);
+    buildLevel2(world, scene, elements, wall.getMesh(), wall2.getMesh(), cubeGravity.getMesh(), cubeGravity2.getMesh(), collectableStone.getMesh());
+    collectableStone.getMesh().visible = collectables[1] === false ? true : false;
     //
     //Ligths
     scene.add(ambientLigth);
@@ -180,7 +194,7 @@ function init() {
     //
     document.getElementById("container3D").appendChild(renderer.domElement);
 
-    thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, portalCamera1, portalCamera2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles, wall, wall2, cubeGravity, cubeGravity2, portalRenderTarget2Return, portalLevel2Return, portalCamera2Return, portalRenderTarget1Return, portalLevel1Return, portalCamera1Return);
+    thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, portalCamera1, portalCamera2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles, wall, wall2, cubeGravity, cubeGravity2, portalRenderTarget2Return, portalLevel2Return, portalCamera2Return, portalRenderTarget1Return, portalLevel1Return, portalCamera1Return, collectableWood.getMesh(), collectableStone.getMesh());
 
     const cameraCenter = document.getElementById('camera-center');
     const deleteMobile = document.getElementById('delete-btn')
@@ -188,12 +202,12 @@ function init() {
 
     buildMobile.addEventListener('touchstart', () => {
         itemSelect = getItemSelect();
-        screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, true)
+        screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, true, newBlocksArray)
     })
 
     deleteMobile.addEventListener('touchstart', () => {
         itemSelect = getItemSelect();
-        screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, false)
+        screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, false, newBlocksArray)
     })
 
     cameraCenter.addEventListener('touchstart', (event) => {
@@ -211,7 +225,7 @@ function init() {
 
     document.addEventListener('mousedown', (event) => {
         itemSelect = getItemSelect();
-        mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody);
+        mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody, newBlocksArray);
     }, false);
 
     document.addEventListener('mouseup', (event) => { mouseLeaved(event) }, false
@@ -233,23 +247,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 tree_trunk = JSON.parse(terrain.tree_trunk);
                 tree_leaves = JSON.parse(terrain.tree_leaves);
             } catch (error) {
-                console.error('Error al convertir el string a array:', error);
+                console.error('Error to parse el string a array:', error);
             }
-            getStats({ "token": localStorage.getItem('token') }).then(stats => {
-                console.log(stats.timePlayed)
-                try {
-                    score = stats.score;
-                    totalTimePlayed = timeToMilliseconds(stats.time_played);
-                    blocksCollected = stats.blocks_collected;
-                    falls = stats.falls;
-                    levels_completed = stats.levels_completed;
-                    console.log(score, blocksCollected, falls, levels_completed)
-                    //builds_user = stats.builds_user;
-                } catch (error) {
-                    console.error('Error al convertir el string a array:', error);
-                }
-            })
-            init();
+            getStats({ "token": localStorage.getItem('token') })
+                .then(stats => {
+                    try {
+                        console.log(stats);
+                        console.log(localStorage.getItem('token'))
+                        score = stats.score | 0;
+                        totalTimePlayed = timeToMilliseconds(stats.time_played) | 0;
+                        blocksCollected = stats.blocks_collected | 0;
+                        falls = stats.falls | 0;
+                        levels_completed = stats.levels_completed | 0;
+                        console.log(score, blocksCollected, falls, levels_completed) | 0;
+                        newBlocksArray = stats.builds_user ? JSON.parse(stats.builds_user) : [];
+                        collectables = stats.collectables ? JSON.parse(stats.collectables) : [false, false, false, false, false, false, false];
+                    } catch (error) {
+                        console.error('Error to string a array:', error);
+                        newBlocksArray = [];
+                        collectables = [false, false, false, false, false, false, false];
+                    }
+                })
+                .then(() => {
+                    init();
+                })
         });
     }
 })
@@ -263,15 +284,15 @@ export function getLevel() {
 }
 
 export async function saveData() {
-
     let result = await updateStats({
-        "score": updateScore(),
+        "score": getScore(),
         "time_played": secondsToTime((((Date.now() + totalTimePlayed) - timePlayed)) / 1000),
         "blocks_collected": blocksCollected,
         "falls": falls,
         "token": localStorage.getItem('token'),
         "levels_completed": levels_completed,
-        "builds_user": getUserBuild()
+        "builds_user": JSON.stringify(newBlocksArray),
+        "collectables": JSON.stringify(collectables),
     });
     alert(result.status === 201 ? 'save succesfully' : 'error on save');
 }
@@ -284,6 +305,29 @@ export function levelsCompleted() {
     levels_completed++;
 }
 
-function updateScore() {
-    return (getMinutes(((Date.now() + totalTimePlayed) - timePlayed) / 1000) * 1) + blocksCollected * 100;
+function getScore() {
+    return (getMinutes(((Date.now() + totalTimePlayed) - timePlayed) / 1000) * 1) + score;
+}
+
+export function setScore(points) {
+    score += points;
+}
+
+export function updateCollectables(dirt = [0, false], wood = [0, false], stone = [0, 0], snow = [], sand = [], log = [], leaves = []) {
+    if (dirt[0]) {
+        collectables[0] = dirt[1];
+        blocksCollected++;
+    }
+    if (wood[0]) {
+        collectables[1] = wood[1];
+        blocksCollected++;
+    }
+    if (stone[0]) {
+        collectables[2] = stone[1];
+        blocksCollected++;
+    }
+}
+
+export function getCollectables() {
+    return collectables;
 }

@@ -1,4 +1,4 @@
-import { register, login } from "../essentials/BackendMethods/Php/fetchMethods";
+import { register, login, logout } from "../essentials/BackendMethods/Php/fetchMethods";
 
 const banner = document.getElementById('banner')
 const windowHeigth = window.innerHeight;
@@ -28,7 +28,7 @@ let currentSection = 0;
 let startY = 0;
 let onCanvas;
 
-localStorage.clear();
+loginBtn.innerText = localStorage.getItem('username') || 'Login';
 
 btnRegister.addEventListener('click', () => {
     registerModal.showModal();
@@ -82,16 +82,23 @@ loginClose.addEventListener('click', () => {
 
 loginForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (localStorage.getItem('token')) {
+        try {
+            logout({ "token": localStorage.getItem('token') })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     try {
         let response = await login({
             "username": document.getElementById('input-login-user').value,
             "password": document.getElementById('input-login-pass').value
         });
 
-        if (response.token) { 
+        if (response.token) {
             localStorage.setItem('token', response.token.split('|')[1]);
             localStorage.setItem('username', response.user);
-        } 
+        }
     } catch (error) {
         console.error('Logging error:', error);
     }

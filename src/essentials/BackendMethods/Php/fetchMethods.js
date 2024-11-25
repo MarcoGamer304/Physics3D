@@ -36,7 +36,6 @@ export async function login(data) {
             }
         });
         let result = await response.json();
-        console.log(result)
         return result;
     } catch (err) {
         console.error('Error:', err);
@@ -77,3 +76,25 @@ export async function getStats(data) {
         console.error('Error:', err);
     }
 }
+
+
+
+export async function logout(data) {
+    try {
+        const response = await fetch('http://localhost:8000/api/logout', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        let result = await response.json();
+        console.log(result.message)
+        localStorage.clear();
+        return result;
+    } catch (err) {
+        console.error('Error:', err);
+    }
+}
+

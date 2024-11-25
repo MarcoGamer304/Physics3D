@@ -1,7 +1,8 @@
 import { Vector3, Clock } from 'three';
 import { moveDirection } from '../controlls/controlls';
 import { Vec3 } from 'cannon-es';
-import { setLevel, getLevel, increasefalls, levelsCompleted } from '../../scenes/levels';
+import { setLevel, getLevel, increasefalls, levelsCompleted, updateCollectables, setScore } from '../../scenes/levels';
+import { updateItemsStyle } from '../controlls/controlls'; 
 
 const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
@@ -19,7 +20,7 @@ if (isPortrait) {
     width = window.innerWidth * 20 / 100 < 200 ? 100 : 200;
 }
 
-function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles, wall, wall2, cubeGravity, cubeGravity2, portalRenderTarget2Return, portalLevel2Return, portalCamera2Return, portalRenderTarget1Return, portalLevel1Return, portalCamera1Return) {
+function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles, wall, wall2, cubeGravity, cubeGravity2, portalRenderTarget2Return, portalLevel2Return, portalCamera2Return, portalRenderTarget1Return, portalLevel1Return, portalCamera1Return, collectableWood, collectableStone) {
 
     const animate = () => {
         moveDirection(keys, playerBody, direction, camera);
@@ -30,7 +31,7 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
 
         world.step(1 / 60);
 
-        resetItems(playerBody, blockToPush, camera);
+        resetItems(playerBody, blockToPush, camera, collectableWood, collectableStone);
         playerMesh.position.copy(playerBody.position);
         playerMesh.quaternion.copy(playerBody.quaternion);
 
@@ -47,6 +48,11 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
         wall2.update();
         cubeGravity.update();
         cubeGravity2.update();
+
+        collectableWood.rotation.x += 0.01;
+        collectableWood.rotation.y += 0.01;
+        collectableStone.rotation.x += 0.01;
+        collectableStone.rotation.y += 0.01;
 
         portalCollitions(playerBody, [portalLevel1, portalLevel2, portalLevel2Return, portalLevel1Return], camera);
         level2Colitions(playerBody, [wall, wall2], [cubeGravity, cubeGravity2]);
@@ -140,13 +146,22 @@ function portalCollitions(playerBody, arrayPortales, camera) {
     });
 }
 
-function resetItems(playerBody, blockToPush, camera) {
+function resetItems(playerBody, blockToPush, camera, collectableWood, collectableStone) {
     if (playerBody.position.y <= -10) { increasefalls() }
-    
+
     switch (getLevel()) {
         case 1:
             if (playerBody.position.y <= -10) {
                 playerBody.position.set(400, 50, 165)
+            }
+            if (playerBody.position.distanceTo(collectableWood.position) <= .7) {
+                if(collectableWood.visible === true){
+                    updateCollectables([1,true],[]);
+                    setScore(30);
+                    updateItemsStyle();
+                }
+                collectableWood.visible = false;
+                
             }
             if (blockToPush.getMesh().position.y <= 20) {
                 blockToPush.reset(360, 70, 165);
@@ -156,6 +171,14 @@ function resetItems(playerBody, blockToPush, camera) {
             if (playerBody.position.y <= -10) {
                 playerBody.position.set(-50, 50, 165);
                 camera.lookAt(new Vector3(-70, 44, 900))
+            }
+            if (playerBody.position.distanceTo(collectableStone.position) <= .7) {
+                if(collectableStone.visible === true){
+                    updateCollectables([],[1, true]);
+                    setScore(30);
+                    updateItemsStyle();
+                }
+               collectableStone.visible = false;
             }
             break;
         case 3:

@@ -2,7 +2,7 @@ import AddBlock from "../../essentials/mecanics/addBlocks.js";
 import RemoveBlock from "../../essentials/mecanics/removeBlocks.js";
 import { Vector3 } from 'three';
 import { detectDeviceType } from "../../tools/Device.js";
-import { saveData } from "../../scenes/levels/index.js";
+import { saveData, getCollectables } from "../../scenes/levels/index.js";
 
 let item;
 let pressIzq = false;
@@ -100,15 +100,37 @@ export function onKeyDown(event, keys, playerBody, controls, jumpSpeed, raycaste
         controls.lock();
     }
     if (diccionario.has(event.code)) {
-        item = diccionario.get(event.code)
-        let index = findMapIndex(item);
+        let index = findMapIndex(diccionario.get(event.code));
 
-        list.forEach(element => {
+        list.forEach((element, index) => {
             element.style.border = '4px solid rgba(212, 212, 212, 0.637)';
+            if (getCollectables()[index] === false) {
+                element.style.opacity = '.3';
+            }
         });
-
-        list[index].style.border = '5px solid rgba(0, 0, 0, 0.659)';
+        if (getCollectables()[index] === true) {
+            item = diccionario.get(event.code)
+            list[index].style.border = '5px solid rgba(0, 0, 0, 0.659)';
+            list[index].style.opacity = '1';
+        }
     }
+}
+
+export function updateItemsStyle() {
+    list.forEach((element, index) => {
+        element.style.border = '4px solid rgba(212, 212, 212, 0.637)';
+        if (getCollectables()[index] === true) {
+            element.style.opacity = '1';
+        }
+    });
+}
+
+export function setStyle() {
+    list.forEach((element, index) => {
+        if (getCollectables()[index] === false || getCollectables()[index] === undefined) {
+            element.style.opacity = '.3';
+        }
+    });
 }
 
 function findMapIndex(keyFind) {
@@ -124,21 +146,21 @@ export function getItemSelect() {
     return item;
 }
 
-export function mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody) {
+export function mousePressed(event, world, scene, elements, raycaster, itemSelect, playerBody, newBlocksArray) {
     if (detectDeviceType() !== 'Desktop') return;
 
     if (event.button === 0) {
-        AddBlock(world, scene, elements, raycaster, itemSelect, playerBody);
+        AddBlock(world, scene, elements, raycaster, itemSelect, playerBody, newBlocksArray);
         if (!pressIzq) {
             pressIzq = true;
-            intervalIzq = setInterval(() => AddBlock(world, scene, elements, raycaster, itemSelect, playerBody), 150);
+            intervalIzq = setInterval(() => AddBlock(world, scene, elements, raycaster, itemSelect, playerBody, newBlocksArray), 150);
         }
     }
     if (event.button === 2) {
-        RemoveBlock(scene, elements, raycaster, world, playerBody);
+        RemoveBlock(scene, elements, raycaster, world, playerBody, newBlocksArray);
         if (!pressDr) {
             pressDr = true;
-            intervalDr = setInterval(() => RemoveBlock(scene, elements, raycaster, world, playerBody), 150);
+            intervalDr = setInterval(() => RemoveBlock(scene, elements, raycaster, world, playerBody, newBlocksArray), 150);
         }
     }
 }
@@ -154,12 +176,12 @@ export function mouseLeaved(event) {
     }
 }
 
-export function screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, remove) {
+export function screenPressed(world, scene, elements, raycaster, itemSelect, playerBody, remove, newBlocksArray) {
     if (!remove) {
-        AddBlock(world, scene, elements, raycaster, itemSelect, playerBody);
+        AddBlock(world, scene, elements, raycaster, itemSelect, playerBody, newBlocksArray);
     }
     if (remove) {
-        RemoveBlock(scene, elements, raycaster, world, playerBody);
+        RemoveBlock(scene, elements, raycaster, world, playerBody, newBlocksArray);
     }
 }
 
@@ -229,12 +251,22 @@ for (let index = 0; index < itemsBar.length; index++) {
     const element = itemsBar[index];
 
     element.addEventListener('touchstart', () => {
-        item = '../../.' + element.getAttribute('src');
-
-        for (let item of itemsBar) {
-            item.style.border = '4px solid rgba(212, 212, 212, 0.637)';
-        }
-        element.style.border = '5px solid rgba(0, 0, 0, 0.659)';
+        list.forEach((itemBar, index) => {
+            if (getCollectables()[index] === true) {
+                element.style.opacity = '1';
+                if (element.getAttribute('src') === itemBar.getAttribute('src')) {
+                    item = '../../../' + itemBar.getAttribute('src');
+                    element.style.border = '5px solid rgba(0, 0, 0, 0.659)';
+                    element.style.opacity = '1';
+                }else{
+                    itemBar.style.border = '4px solid rgba(212, 212, 212, 0.637)';  
+                    element.style.opacity = '.3';
+                }
+            } else {
+                itemBar.style.border = '4px solid rgba(212, 212, 212, 0.637)';
+                itemBar.style.opacity = '.3';
+            }
+        })
     })
 }
 
@@ -280,7 +312,7 @@ cameraLeft.addEventListener('touchend', () => { cameraDirection('left', cameraRe
 cameraRigth.addEventListener('touchstart', () => { cameraDirection('right', cameraRef, true) }, { passive: true });
 cameraRigth.addEventListener('touchend', () => { cameraDirection('right', cameraRef, false) }, { passive: true });
 
-document.addEventListener('keydown',async (e) => {
+document.addEventListener('keydown', async (e) => {
     if (e.code === 'KeyG') {
         saveData()
     }

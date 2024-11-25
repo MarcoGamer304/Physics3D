@@ -18,6 +18,7 @@ export function getMinutes(seconds){
 }
 
 export function timeToMilliseconds(time) {
+    if(!time){ return 0; }
     const [hours, minutes, seconds] = time.split(':').map(Number);
     
     const milliseconds = 

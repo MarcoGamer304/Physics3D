@@ -1,10 +1,9 @@
 import CubeMesh from "../../components/shapes/cubeMesh.js";
 import { Vector3 } from "three";
 
-const newBlocksArray = [];
+function AddBlock(world, scene, elements, raycaster, itemSelect, playerBody, newBlocksArray) {
 
-function AddBlock(world, scene, elements, raycaster, itemSelect = "../../../public/textures/g_5.png", playerBody) {
-
+    if(!itemSelect){ return; }
     const intersects = raycaster.intersectObjects(elements);
 
     if (intersects.length > 0) {
@@ -43,15 +42,5 @@ function AddBlock(world, scene, elements, raycaster, itemSelect = "../../../publ
         }
     }
 }
-
-export function getUserBuild(){
-    return JSON.stringify(newBlocksArray, "");
-}
-
-document.addEventListener('keydown', (event) => {
-    if (event.code === 'KeyP') {
-     console.log(JSON.stringify(newBlocksArray, ""));
-    }
-})
 
 export default AddBlock

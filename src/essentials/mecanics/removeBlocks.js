@@ -1,6 +1,6 @@
 import { Vector3 } from "three";
 
-function RemoveBlock(scene, elements, raycaster, world, playerBody) {
+function RemoveBlock(scene, elements, raycaster, world, playerBody, newBlocksArray) {
     const intersects = raycaster.intersectObjects(elements);
 
     if (intersects.length > 0) {

@@ -2,7 +2,7 @@ import CubeMesh from "../../components/shapes/cubeMesh.js";
 import PlaneConstructor from "../../components/shapes/PlaneColitions.js";
 
 
-export function buildLevel2(world, scene, elements, wall, wall2,cubeGravity,cubeGravity2) {
+export function buildLevel2(world, scene, elements, wall, wall2,cubeGravity,cubeGravity2,collectableStone) {
 
     const floorLv2 = new PlaneConstructor([-50, 48, 165], "../../../public/textures/stone.png", [0, 0, 0], [5, 10], world).getMesh();
 
@@ -15,7 +15,7 @@ export function buildLevel2(world, scene, elements, wall, wall2,cubeGravity,cube
     const c5 = new CubeMesh([-53, 46, 227], "../../../public/textures/stone.png", 2, world, 100).getMesh();
     const finish3 = new PlaneConstructor([-49, 45, 243], "../../../public/textures/stone.png", [0, 0, 0], [5, 10], world).getMesh();
 
-    scene.add(floorLv2, c1, c2, c3, inclinado, wall, wall2, inclinadof9, c4, c5, cubeGravity, cubeGravity2, finish3);
+    scene.add(floorLv2, c1, c2, c3, inclinado, wall, wall2, inclinadof9, c4, c5, cubeGravity, cubeGravity2, finish3, collectableStone);
     elements.push(floorLv2, c1, c2, c3, inclinado, wall, wall2, inclinadof9, c4, c5, cubeGravity, cubeGravity2, finish3);
 }
 
