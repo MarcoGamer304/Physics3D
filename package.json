@@ -19,6 +19,7 @@
     "physics": "file:",
     "simplex-noise": "^4.0.3",
     "socket.io-client": "^4.8.0",
+    "tabulator-tables": "^6.3.0",
     "three": "^0.168.0"
   }
 }

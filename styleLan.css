@@ -32,6 +32,10 @@ canvas {
   margin: 0rem;
 }
 
+.margin-4 {
+  margin-bottom: 0.6rem;
+}
+
 .select {
   background-color: hsl(35, 100%, 62%);
 }
@@ -62,6 +66,10 @@ canvas {
 
 .btnPlay:hover {
   background-color: hsl(217, 8%, 19%);
+}
+
+#closeStadistics:hover, #stadisticsBtn:hover, #logoutBtn:hover {
+  background-color: hsl(0, 0%, 88%);
 }
 
 #loginModal, #registerModal {

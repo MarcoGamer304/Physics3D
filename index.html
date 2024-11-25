@@ -7,8 +7,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./styleLan.css">
   <title>Interactivas LandingPage</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.0.9/css/tabulator.min.css" rel="stylesheet">
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.0.9/js/tabulator.min.js"></script>
   <script type="module" src="./src/landingPage/index.js"></script>
   <script type="module" src="./src/landingPage/three/renderModel.js"></script>
+  <script type="module" src="./src/stadistics/globalStadistics.js"></script>
 </head>
 
 <body class="no-select">
@@ -16,7 +20,11 @@
     <header>
       <nav id="navBar">
         <img src="./public/svg/vite.svg" width="30px" height="30px" alt="logo">
-        <button id="loginBtn" class="btn">Login</button>
+        <div>
+          <button id="stadisticsBtn" class="btn">Stats</button>
+          <button id="logoutBtn" class="btn">Logout</button>
+          <button id="loginBtn" class="btn">Login</button>
+        </div>
       </nav>
     </header>
 
@@ -157,7 +165,8 @@
       </div>
       <button id="loginSubmit">Send</button>
     </form>
-    <span class="createAccount">Looking to<button class="refactorBtn clrBlue" id="btnRegister">create an account ?</button></span>
+    <span class="createAccount">Looking to<button class="refactorBtn clrBlue" id="btnRegister">create an account
+        ?</button></span>
   </dialog>
 
   <!-- register -->
@@ -191,17 +200,27 @@
         <input type="email" placeholder="Email" class="input" id="input-register-email" required>
       </div>
       <div>
-        <input type="text" placeholder="Country" class="input" id="input-register-country" required>
+        <label for="selectCountry">Select country</label>
+        <select id="selectCountry" class="input"></select>
       </div>
       <div>
-        <input type="text" placeholder="Language" class="input" id="input-register-languge" required>
+        <label for="selectLanguage">Select language</label>
+        <select id="selectLanguage" class="input"></select>
       </div>
       <div>
         <input type="number" placeholder="Phone" class="input" id="input-register-phone" required>
       </div>
       <button id="registerSubmit">Send</button>
     </form>
-    <span class="createAccount">Looking to<button class="refactorBtn clrBlue" id="returnLogin">loggin an account ?</button></span>
+    <span class="createAccount">Looking to<button class="refactorBtn clrBlue" id="returnLogin">loggin an
+        account?</button></span>
+  </dialog>
+
+  <dialog id="stadisticsModal">
+    <button class="btn margin-4" id="closeStadistics">X</button>    
+    <div>
+      <div id="stadistics-table"></div>
+    </div>
   </dialog>
 
 </body>

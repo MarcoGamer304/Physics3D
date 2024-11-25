@@ -1,4 +1,5 @@
-import { register, login, logout } from "../essentials/BackendMethods/Php/fetchMethods";
+import { register, login, logout, getLanguages, getCountries } from "../essentials/BackendMethods/Php/fetchMethods";
+import { setTable } from "../stadistics/globalStadistics";
 
 const banner = document.getElementById('banner')
 const windowHeigth = window.innerHeight;
@@ -22,6 +23,13 @@ const registerForm = document.getElementById('registerForm');
 const inputRegisterUser = document.getElementById('input-register-user');
 const inputRegisterEmail = document.getElementById('input-register-email');
 
+const selectLanguage = document.getElementById('selectLanguage');
+const selectCountry = document.getElementById('selectCountry');
+const logoutBtn = document.getElementById('logoutBtn');
+const stadisticsBtn = document.getElementById('stadisticsBtn');
+const stadisticsModal = document.getElementById('stadisticsModal')
+const closeStadistics =document.getElementById('closeStadistics');
+
 const canvas = document.getElementById('canvasFrame');
 const sections = document.getElementsByClassName('section');
 let currentSection = 0;
@@ -30,19 +38,28 @@ let onCanvas;
 
 loginBtn.innerText = localStorage.getItem('username') || 'Login';
 
+stadisticsBtn.addEventListener('click',()=>{
+   stadisticsModal.showModal();
+   setTable();
+});
+
+closeStadistics.addEventListener('click',()=>{
+    stadisticsModal.close();
+});
+
 btnRegister.addEventListener('click', () => {
     registerModal.showModal();
     loginModal.close();
-}),
+});
 
-    registerClose.addEventListener('click', () => {
-        registerModal.close();
-    });
+registerClose.addEventListener('click', () => {
+    registerModal.close();
+});
 
 returnLogin.addEventListener('click', () => {
     registerModal.close();
     loginModal.showModal();
-})
+});
 
 registerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -53,10 +70,9 @@ registerForm.addEventListener('submit', async (event) => {
     let response = await register({
         "username": document.getElementById('input-register-user').value,
         "password": document.getElementById('input-register-pass').value,
-        "contry": document.getElementById('input-register-country').value,
+        "contry": document.getElementById('selectCountry').value,
         "email": document.getElementById('input-register-email').value,
-        "phone": document.getElementById('input-register-languge').value,
-        "language": document.getElementById('input-register-phone').value
+        "language": document.getElementById('selectLanguage').value
     });
 
     if (response.acces_token) {
@@ -74,10 +90,23 @@ registerForm.addEventListener('submit', async (event) => {
 
 loginBtn.addEventListener('click', () => {
     loginModal.showModal();
+    setCountries();
+    setLenguages();
 })
 
 loginClose.addEventListener('click', () => {
     loginModal.close()
+});
+
+logoutBtn.addEventListener('click', () => {
+    if (localStorage.getItem('token')) {
+        try {
+            logout({ "token": localStorage.getItem('token') })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    loginBtn.innerText = localStorage.getItem('username') || 'Login';
 });
 
 loginForm.addEventListener('submit', async (event) => {
@@ -158,4 +187,24 @@ window.addEventListener('touchend', (e) => {
     sections[currentSection].scrollIntoView({ behavior: 'smooth' });
 });
 
+async function setCountries() {
+    let response = await getCountries();
 
+    response.forEach(element => {
+        let option = document.createElement('option');
+        option.setAttribute('value', element.country);
+        option.innerText = element.country;
+        selectCountry.appendChild(option);
+    })
+}
+
+async function setLenguages() {
+    let response = await getLanguages();
+
+    response.forEach(element => {
+        let option = document.createElement('option');
+        option.setAttribute('value', element.language);
+        option.innerText = element.language;
+        selectLanguage.appendChild(option);
+    });
+}

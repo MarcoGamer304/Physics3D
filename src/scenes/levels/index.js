@@ -28,14 +28,15 @@ import UserBuild from "../../components/shapes/userBuilds.js";
 import { setStyle } from "../../essentials/controlls/controlls.js";
 /*
 TASKS
-6. dar estilo al chat
-7. hacer una tabla de loggs de usuarios
-8. hacer un index para las estadisticas de juego
-9. blockear la construccion de bloque no recolectados y poner un bloque giratorio al final de los niveles que lo active
-10. agregar mas soporte a los comandos de voz  | menu | guardarPartida | estadisticas | etc.
-11. menus 
+11. menus en modal: boton volver al menu, boton guardar partida.
+7. hacer una tabla de loggs de usuarios con la DURACION DE LAS SESSIONES DE JUEGO;
 
-13.los coleccionables variable blocks y traer la data de la bd para inicializar las variables de juego
+13. DOCUMENTAR TODO ////////////////////////////////
+
+//opcional
+6. dar estilo al chat
+10. agregar mas soporte a los comandos de voz  | menu | guardarPartida | estadisticas | etc.
+
 */
 let globalLevel = Number(0);
 let terrainPhp = [];
