@@ -91,3 +91,28 @@
     border: 1px solid $clr-black;
     width: 50%;
 }
+
+#menuModal{
+    min-width: 25vw;
+    max-width: 70vw;
+    border-radius: $fs-nnm;
+    border: transparent;
+    padding: $mt-nm;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    @include respond-to($tablet-portrait) {
+        min-width: 45vw;
+    }
+
+    @include respond-to($tablet-landscape) {
+        min-width: 35vh;
+    }
+
+    @include respond-to($large-desktop) {
+        min-width: 10vw;
+    }
+}
+

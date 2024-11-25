@@ -77,3 +77,8 @@ button:hover {
     padding: $fs-nmxx $fs-mmd $fs-nmxx $fs-mmd;
     border-color: $clr-main;
 }
+
+#closeModalBtn{
+    display: grid;
+    place-self: center;
+}

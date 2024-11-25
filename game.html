@@ -13,6 +13,8 @@
 
   <div id="container3D"></div>
 
+  <button style="position: absolute; z-index: 20; top: 2vh;" id="menuModalBtn">Menu</button>
+
   <div class="crosshair">
     <span class="rowArrow"></span>
     <span class="columnArrow"></span>
@@ -30,7 +32,8 @@
   <main id="hud">
     <div id="controller">
       <div class="directional-pad no-select">
-        <div id="build-btn" class="button" style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-left: 25%;"></div>
+        <div id="build-btn" class="button"
+          style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-left: 25%;"></div>
         <div id="controller-up" class="button"></div>
         <div class="row">
           <div id="controller-left" class="button"></div>
@@ -41,7 +44,8 @@
       </div>
 
       <div class="camera-pad no-select">
-        <div id="delete-btn" class="button" style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-right: 25%;"></div>
+        <div id="delete-btn" class="button"
+          style="background-color: rgba(29, 137, 5, 0.526); position: absolute; margin-right: 25%;"></div>
         <div id="camera-up" class="button"></div>
         <div class="row">
           <div id="camera-left" class="button"></div>
@@ -76,8 +80,15 @@
         <img src="./public/textures/leaves.png" alt="leaves" class="block">
       </li>
     </ul>
-
   </main>
+
+  <dialog id="menuModal">
+      <input type="button" value="X" id="closeModalBtn">  
+    <div>
+      <button id="menuBtn">Menu</button>
+      <button id="saveBtn">Save</button>
+    </div>
+  </dialog>
 
   <script type="module" src="./src/scenes/levels/index.js"></script>
   <script type="module" src="./src/essentials/controlls/controlls.js"></script>

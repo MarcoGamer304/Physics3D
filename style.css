@@ -220,6 +220,39 @@ button:hover {
   width: 50%;
 }
 
+#menuModal {
+  min-width: 25vw;
+  max-width: 70vw;
+  border-radius: 0.4rem;
+  border: transparent;
+  padding: 2vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+@media only screen and (max-width: 767px) {
+  #menuModal {
+    min-width: 45vw;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 979px) {
+  #menuModal {
+    min-width: 35vh;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  #menuModal {
+    min-width: 10vw;
+  }
+}
+
+.modalContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: self-end;
+}
+
 #myForm {
   display: flex;
   flex-direction: row;

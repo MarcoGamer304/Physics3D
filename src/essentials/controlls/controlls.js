@@ -25,6 +25,12 @@ const cameraRigth = document.getElementById("camera-right");
 const buttons = document.getElementsByClassName('button');
 const itemsBar = document.getElementsByClassName('block');
 const elementList = document.getElementById('itemList');
+const menuModal = document.getElementById('menuModal');
+const menuBtn = document.getElementById('menuBtn');
+const saveBtn = document.getElementById('saveBtn');
+const menuModalBtn = document.getElementById('menuModalBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+
 const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 const itemList = document.getElementsByClassName('block');
 const list = [...itemList]
@@ -201,7 +207,7 @@ function ajustMobile() {
             element.style.width = '10vh';
             element.style.height = '10vh';
             if (detectDeviceType() === 'Mobile') {
-                elementList.style.marginTop = '30%'
+                elementList.style.marginTop = '25%'
 
                 for (let items of itemsBar) {
                     items.style.width = '3rem'
@@ -258,8 +264,8 @@ for (let index = 0; index < itemsBar.length; index++) {
                     item = '../../../' + itemBar.getAttribute('src');
                     element.style.border = '5px solid rgba(0, 0, 0, 0.659)';
                     element.style.opacity = '1';
-                }else{
-                    itemBar.style.border = '4px solid rgba(212, 212, 212, 0.637)';  
+                } else {
+                    itemBar.style.border = '4px solid rgba(212, 212, 212, 0.637)';
                     element.style.opacity = '.3';
                 }
             } else {
@@ -312,8 +318,20 @@ cameraLeft.addEventListener('touchend', () => { cameraDirection('left', cameraRe
 cameraRigth.addEventListener('touchstart', () => { cameraDirection('right', cameraRef, true) }, { passive: true });
 cameraRigth.addEventListener('touchend', () => { cameraDirection('right', cameraRef, false) }, { passive: true });
 
+menuModalBtn.addEventListener('touchstart',()=>{ menuModal.showModal(); });
+
+//Menu actions 
+menuBtn.addEventListener('click', async () => { 
+    saveData().then(() => { location.href = '../../../index.html'; })
+});
+saveBtn.addEventListener('click', async()=>{ saveData(); });
+closeModalBtn.addEventListener('click',()=>{ menuModal.close();})
+
 document.addEventListener('keydown', async (e) => {
     if (e.code === 'KeyG') {
         saveData()
+    }
+    if (e.code === 'Tab' || e.code === 'KeyE') {
+        menuModal.showModal();
     }
 })

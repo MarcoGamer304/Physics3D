@@ -5,6 +5,7 @@ export function DeviceController(camera, renderer) {
 
     let controls;
     const isMobile = document.querySelector("#controller");
+    const menuModalBtn = document.getElementById('menuModalBtn');
 
     const detectDeviceType = () =>
         /Mobile|Android|iPhone|iPad/i.test(navigator.userAgent)
@@ -13,10 +14,12 @@ export function DeviceController(camera, renderer) {
 
     if (detectDeviceType() === 'Desktop') {
         isMobile.style.zIndex = "0"; 
+        menuModalBtn.style.zIndex = "0"; 
         return controls = new PointerLockControls(camera, renderer.domElement);
 
     } else if (detectDeviceType() === 'Mobile') {
-        isMobile.style.zIndex = "2";      
+        isMobile.style.zIndex = "2";
+        menuModalBtn.style.zIndex = "20";       
         return controls = new OrbitControls(camera, renderer.domElement);
     };
 }
