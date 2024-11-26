@@ -1,6 +1,7 @@
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+//return a type of pointerLock or Orbital controls depending on the type of device
 export function DeviceController(camera, renderer) {
 
     let controls;
@@ -24,7 +25,7 @@ export function DeviceController(camera, renderer) {
     };
 }
 
-
+//return device
 export const detectDeviceType = () =>
     /Mobile|Android|iPhone|iPad/i.test(navigator.userAgent)
         ? 'Mobile'

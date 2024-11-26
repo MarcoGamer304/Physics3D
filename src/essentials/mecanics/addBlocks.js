@@ -6,6 +6,7 @@ function AddBlock(world, scene, elements, raycaster, itemSelect, playerBody, new
     if(!itemSelect){ return; }
     const intersects = raycaster.intersectObjects(elements);
 
+    //intersects if raycast collition to any on elements array
     if (intersects.length > 0) {
         const intersect = intersects[0];
 
@@ -19,6 +20,7 @@ function AddBlock(world, scene, elements, raycaster, itemSelect, playerBody, new
         const newCube = new CubeMesh([Math.round(intersect.point.x), y, Math.round(intersect.point.z)], itemSelect, 1, world).getMesh();
         const positionToCheck = [Math.round(intersect.point.x), y, Math.round(intersect.point.z)];
 
+        // check if block exist in that position
         const alreadyExists = newBlocksArray.some(block =>
             block[0] === positionToCheck[0] &&
             block[1] === positionToCheck[1] &&

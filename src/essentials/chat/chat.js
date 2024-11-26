@@ -1,14 +1,16 @@
 import { io } from 'socket.io-client'
 import { detectDeviceType } from '../../tools/Device'; 
 
+// connnect http to change ws connection
 const socket = io.connect('http://expresssocketio-production-211e.up.railway.app');
 const menssageList = document.getElementById('menssageList')
 const form = document.getElementById('myForm');
 
 const nameUser = localStorage.getItem('username')
-
+//register in sala at server
 socket.emit('userRegister', nameUser);
 
+//emit new Message at server
 form.addEventListener('submit', function (event) {
     event.preventDefault();
 
@@ -20,16 +22,17 @@ form.addEventListener('submit', function (event) {
     }
 
 });
-
+//recive message on server
 socket.on('respuestaServidor', (data) => {
     createPElement(data)
 });
-
+//fix chat
 function ajustChat(){
     const messaging = document.getElementById('messaging')
     if(detectDeviceType() === 'Mobile'){
         messaging.style.minHeight = '82%'
         messaging.style.maxHeight = '150px'
+        messaging.style.overflow = 'visible'
     }
   
 }

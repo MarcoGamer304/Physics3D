@@ -19,7 +19,7 @@ if (isPortrait) {
     height = window.innerHeight * 50 / 100 < 200 ? 100 : 200;
     width = window.innerWidth * 20 / 100 < 200 ? 100 : 200;
 }
-
+//main thread, game logic, and increase world step
 function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles, wall, wall2, cubeGravity, cubeGravity2, portalRenderTarget2Return, portalLevel2Return, portalCamera2Return, portalRenderTarget1Return, portalLevel1Return, portalCamera1Return, collectableWood, collectableStone) {
 
     const animate = () => {
@@ -93,7 +93,7 @@ function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, min
 
     renderer.setScissorTest(false);
 }
-
+//make move cameras
 function cameraAnimation(camera, camMove) {
     if (camMove) {
         if (camera.position.y > 4) {
@@ -114,12 +114,12 @@ function cameraAnimation(camera, camMove) {
     }
     return camMove;
 }
-
+//make move cameras
 function camerasAnimated(cameras) {
     cam1Move = cameraAnimation(cameras[0], cam1Move);
     cam2Move = cameraAnimation(cameras[1], cam2Move);
 }
-
+//managment array collitions to transport player
 function portalCollitions(playerBody, arrayPortales, camera) {
     if (!arrayPortales) return;
 
@@ -145,7 +145,7 @@ function portalCollitions(playerBody, arrayPortales, camera) {
         }
     });
 }
-
+//reset position of player on current level, reset objets with gravity, set collectable blocks once
 function resetItems(playerBody, blockToPush, camera, collectableWood, collectableStone) {
     if (playerBody.position.y <= -10) { increasefalls() }
 
@@ -194,7 +194,7 @@ function resetItems(playerBody, blockToPush, camera, collectableWood, collectabl
             break;
     }
 }
-
+//movement collitions on level 2
 function level2Colitions(playerBody, walllv2, cubesl2) {
     if (!walllv2) return;
     if (!cubesl2) return;

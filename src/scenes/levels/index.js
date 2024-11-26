@@ -54,16 +54,20 @@ let levels_completed = Number(0);
 function init() {
     timePlayed += Date.now();
     setStyle();
-
+    //main camera and initialize music with him
     const camera = new Camera(75, window.innerWidth / window.innerHeight, 0.01, 500).getCamera();
     camera.position.set(40, 3, 30);
     camera.lookAt(0, 0, 0)
     Music(camera);
 
+    //raycast
     const raycaster = new Raycaster();
     const raycasterCollitions = new Raycaster();
+
+    //world physics
     const world = new CANNON.World();
 
+    //Debuger controls depends device
     const cannonDebugger = Debugger(scene, world);
     const controls = DeviceController(camera, renderer);
     const direction = new Vector3();
@@ -234,7 +238,7 @@ function init() {
         () => { onWindowResize(renderer, camera); }, false
     );
 }
-
+//initialice game after bring all game info data and initialize variables 
 document.addEventListener("DOMContentLoaded", () => {
     if (!localStorage.getItem("token")) {
         window.location.href = '../../../index.html';
@@ -281,7 +285,7 @@ export function setLevel(level) {
 export function getLevel() {
     return globalLevel;
 }
-
+// function tu save data with plater stats
 export async function saveData() {
     let result = await updateStats({
         "score": getScore(),
@@ -312,6 +316,7 @@ export function setScore(points) {
     score += points;
 }
 
+//function to update array of collectables 
 export function updateCollectables(dirt = [0, false], wood = [0, false], stone = [0, 0], snow = [], sand = [], log = [], leaves = []) {
     if (dirt[0]) {
         collectables[0] = dirt[1];
@@ -330,7 +335,7 @@ export function updateCollectables(dirt = [0, false], wood = [0, false], stone =
 export function getCollectables() {
     return collectables;
 }
-
+//create user log 
 export async function createLog(state) {
     createStatsLog({
         "length": (Date.now() - timePlayed) / 1000,

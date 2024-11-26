@@ -2,6 +2,8 @@ import CubeMesh from "../../components/shapes/cubeMesh.js";
 import PlaneConstructor from "../../components/shapes/PlaneColitions.js";
 import Cube from "../../components/shapes/cube.js";
 
+//Build meshes of cubes and planes for the level's own structure, 
+//add the meshes to the scene and add the elements to the raycast for jump and construction collisions
 export function buildLevel1(world, scene, elements, blockToPush, collectableWood) {
 
     const floorLv1 = new PlaneConstructor([400, 48, 165], "../../../public/textures/stone.png", [0, 0, 0], [10, 10], world).getMesh();

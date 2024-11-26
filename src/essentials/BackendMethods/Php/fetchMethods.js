@@ -1,3 +1,4 @@
+//feth methodos, to send and receive data from the backend over http protocols
 export async function getData() {
     try {
         const response = await fetch(/*'http://192.168.100.143/api/terrain/6'*/'http://localhost:8000/api/terrain/1', {

@@ -1,5 +1,6 @@
 import { WebGLRenderer } from 'three'
 
+//build and return a renderer
 const renderer = new WebGLRenderer({
     antialias: false,  
     preserveDrawingBuffer: false,

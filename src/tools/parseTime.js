@@ -1,3 +1,4 @@
+//recive seconds and return formate Time hh:mm:ss
 export function secondsToTime(seconds) {
     
     const hours = Math.floor(seconds / 3600);
@@ -12,11 +13,11 @@ export function secondsToTime(seconds) {
 
     return formattedTime;
 }
-
+// recive seconds and return minutes
 export function getMinutes(seconds){
     return Math.floor((seconds % 3600) / 60);
 }
-
+//recive Time and return milliseconds
 export function timeToMilliseconds(time) {
     if(!time){ return 0; }
     const [hours, minutes, seconds] = time.split(':').map(Number);

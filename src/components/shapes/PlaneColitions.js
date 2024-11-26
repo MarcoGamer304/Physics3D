@@ -1,6 +1,9 @@
 import { BoxGeometry, MeshBasicMaterial, Mesh, DoubleSide, TextureLoader, LinearMipmapLinearFilter } from 'three';
 import { Body, Box, Vec3, Quaternion } from 'cannon-es';
 
+//Creates a plane that extends its dimensions to the width and length of the terrain 
+//and gives it a cube geometry and changes the texture by parameter, 
+//contains its collision body and its movement is flexible in the three axes
 class PlaneConstructor {
     constructor(positions = [0, 0, 0], texturePath = "", rotation = [.5, 0, 0], size = [5, 5], world) {
         const geometry = new BoxGeometry(size[0], .6, size[1]);

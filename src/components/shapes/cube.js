@@ -1,5 +1,7 @@
 import { BoxGeometry, MeshBasicMaterial, Mesh, MeshStandardMaterial, TextureLoader, LinearMipmapLinearFilter } from 'three'
 
+//Creates a block with variable dimensions and gives it a cube geometry 
+//and changes the texture by parameter, contains methods to reset the movement of the mesh
 class Cube {
     constructor(position=[0,0,0], texturePath = "../../../public/textures/g_5.png",altura=1, alt = 1) {
         const geometry = new BoxGeometry(alt, altura, alt);

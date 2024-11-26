@@ -2,6 +2,9 @@
 let trees = [];
 let tronco = [];
 
+//receives the terrain matrix and the blocks with a height greater than 1 and based 
+//on a probability of 10% maps the coordinates of a matrix and rearranges them with the x,y,z 
+//coordinates of the current position of the loop
 export function generateTrees(terrainPhp) {
 
     const tree = [
@@ -36,7 +39,6 @@ export function generateTrees(terrainPhp) {
         }
     }
 
-
     /*
     console.log("hojas");
     console.log(JSON.stringify(trees, null, ""));
@@ -45,10 +47,11 @@ export function generateTrees(terrainPhp) {
     console.info(JSON.stringify(tronco, null, ""));
     */
 }
+//export array trees
 export function getTrees() {
     return trees;
 }
-
+//export array tronco
 export function getTronco() {
     return tronco;
 }

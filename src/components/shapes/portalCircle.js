@@ -1,5 +1,6 @@
 import { CircleGeometry, Mesh, MeshStandardMaterial} from 'three'
 
+//creates the mesh of a flattened circle which renders the render target of a camera
 class PortalCircle {
     constructor(position=[0,0,0], portalRenderTarget) {
         const geometry = new CircleGeometry(1);

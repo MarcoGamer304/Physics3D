@@ -1,5 +1,9 @@
 import { PlaneGeometry, MeshBasicMaterial, Mesh, MeshStandardMaterial, DoubleSide,TextureLoader, LinearMipmapLinearFilter } from 'three'
 import { Body, Box, Vec3, Quaternion} from 'cannon-es';
+
+//Creates a plane that extends its dimensions to the width and length of the terrain 
+//and gives it a plane geometry and changes the texture by parameter, 
+//contains its collision body and is static
 class Floor {
     constructor(positions=[0,0,0], rotation = .5, texturePath="", rotationY= 0, size =[5,5], world) {
         const geometry = new PlaneGeometry(size[0], size[1]);

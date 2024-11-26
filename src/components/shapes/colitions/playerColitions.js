@@ -1,5 +1,6 @@
 import * as CANNON from 'cannon-es';
 
+//Creates a Cannon-es body that is used as the player's collision
 function PlayerColitions(world) {
     const playerBody = new CANNON.Body({
         mass: 1,

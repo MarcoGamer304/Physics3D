@@ -1,5 +1,6 @@
 import { getGlobalStats } from '../essentials/BackendMethods/Php/fetchMethods';
 
+//receives the data from the user's global statistics, creates a dynamic table with Tab lib and sends it to a div
 export async function setTable() {
     const table = new Tabulator("#stadistics-table", { 
         data: await getGlobalStats(), 
