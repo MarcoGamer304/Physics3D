@@ -26,15 +26,13 @@ import { updateStats } from "../../essentials/BackendMethods/Php/fetchMethods.js
 import { secondsToTime, getMinutes, timeToMilliseconds } from "../../tools/parseTime.js";
 import UserBuild from "../../components/shapes/userBuilds.js";
 import { setStyle } from "../../essentials/controlls/controlls.js";
+import { createStatsLog } from "../../essentials/BackendMethods/Php/fetchMethods.js";
 /*
 TASKS
-11. menus en modal: boton volver al menu, boton guardar partida.
 7. hacer una tabla de loggs de usuarios con la DURACION DE LAS SESSIONES DE JUEGO;
-
 13. DOCUMENTAR TODO ////////////////////////////////
 
 //opcional
-6. dar estilo al chat
 10. agregar mas soporte a los comandos de voz  | menu | guardarPartida | estadisticas | etc.
 
 */
@@ -295,7 +293,7 @@ export async function saveData() {
         "builds_user": JSON.stringify(newBlocksArray),
         "collectables": JSON.stringify(collectables),
     });
-    alert(result.status === 201 ? 'save succesfully' : 'error on save');
+    console.log(result.status === 201 ? 'save succesfully' : 'error on save');
 }
 
 export function increasefalls() {
@@ -331,4 +329,14 @@ export function updateCollectables(dirt = [0, false], wood = [0, false], stone =
 
 export function getCollectables() {
     return collectables;
+}
+
+export async function createLog(state) {
+    createStatsLog({
+        "length": (Date.now() - timePlayed) / 1000,
+        "browser": navigator.userAgent,
+        "screen": screen.width + "x" + screen.height,
+        "level": globalLevel,
+        "has_closed_browser": state
+    });
 }

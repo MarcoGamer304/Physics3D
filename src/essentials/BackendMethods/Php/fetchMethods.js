@@ -143,3 +143,19 @@ export async function getGlobalStats() {
     }
 }
 
+export async function createStatsLog(data) {
+    try {
+        const response = await fetch('http://localhost:8000/api/session/log', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        let result = await response.json();
+        console.log(result.state)
+        return result;
+    } catch (err) {
+        console.error('Error:', err);
+    }
+}

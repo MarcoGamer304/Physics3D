@@ -2,7 +2,7 @@ import AddBlock from "../../essentials/mecanics/addBlocks.js";
 import RemoveBlock from "../../essentials/mecanics/removeBlocks.js";
 import { Vector3 } from 'three';
 import { detectDeviceType } from "../../tools/Device.js";
-import { saveData, getCollectables } from "../../scenes/levels/index.js";
+import { saveData, getCollectables, createLog } from "../../scenes/levels/index.js";
 
 let item;
 let pressIzq = false;
@@ -318,18 +318,26 @@ cameraLeft.addEventListener('touchend', () => { cameraDirection('left', cameraRe
 cameraRigth.addEventListener('touchstart', () => { cameraDirection('right', cameraRef, true) }, { passive: true });
 cameraRigth.addEventListener('touchend', () => { cameraDirection('right', cameraRef, false) }, { passive: true });
 
-menuModalBtn.addEventListener('touchstart',()=>{ menuModal.showModal(); });
+menuModalBtn.addEventListener('touchstart', () => { menuModal.showModal(); });
 
 //Menu actions 
-menuBtn.addEventListener('click', async () => { 
-    saveData().then(() => { location.href = '../../../index.html'; })
+menuBtn.addEventListener('click', async () => {
+    await saveData();
+    await createLog(1).then(()=>{
+        setTimeout(()=>{
+            location.href = '../../../index.html';
+        },1500)
+     
+    })
 });
-saveBtn.addEventListener('click', async()=>{ saveData(); });
-closeModalBtn.addEventListener('click',()=>{ menuModal.close();})
+
+saveBtn.addEventListener('click', async () => { saveData(); createLog(0); menuModal.close(); });
+closeModalBtn.addEventListener('click', () => { menuModal.close(); })
 
 document.addEventListener('keydown', async (e) => {
     if (e.code === 'KeyG') {
-        saveData()
+        saveData();
+        createLog(0);
     }
     if (e.code === 'Tab' || e.code === 'KeyE') {
         menuModal.showModal();
