@@ -1,7 +1,9 @@
 //feth methodos, to send and receive data from the backend over http protocols
+const url = /* "http://192.168.100.143" */ "http://localhost:8000";
+
 export async function getData() {
     try {
-        const response = await fetch(/*'http://192.168.100.143/api/terrain/6'*/'http://localhost:8000/api/terrain/1', {
+        const response = await fetch(url+'/api/terrain/1', {
             method: 'GET'
         });
         let result = await response.json();
@@ -13,7 +15,7 @@ export async function getData() {
 
 export async function register(data) {
     try {
-        const response = await fetch('http://localhost:8000/api/register', {
+        const response = await fetch(url+'/api/register', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -29,7 +31,7 @@ export async function register(data) {
 
 export async function login(data) {
     try {
-        const response = await fetch('http://localhost:8000/api/login', {
+        const response = await fetch(url+'/api/login', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -45,7 +47,7 @@ export async function login(data) {
 
 export async function updateStats(data) {
     try {
-        const response = await fetch('http://localhost:8000/api/stadistics', {
+        const response = await fetch(url+'/api/stadistics', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -53,7 +55,7 @@ export async function updateStats(data) {
             }
         });
         let result = await response.json();
-        console.log(result.state)
+        console.log(result)
         return result;
     } catch (err) {
         console.error('Error:', err);
@@ -62,7 +64,7 @@ export async function updateStats(data) {
 
 export async function getStats(data) {
     try {
-        const response = await fetch('http://localhost:8000/api/user/stats', {
+        const response = await fetch(url+'/api/user/stats', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -79,7 +81,7 @@ export async function getStats(data) {
 
 export async function logout(data) {
     try {
-        const response = await fetch('http://localhost:8000/api/logout', {
+        const response = await fetch(url+'/api/logout', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {
@@ -98,7 +100,7 @@ export async function logout(data) {
 
 export async function getLanguages() {
     try {
-        const response = await fetch('http://localhost:8000/api/languages', {
+        const response = await fetch(url+'/api/languages', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',               
@@ -114,7 +116,7 @@ export async function getLanguages() {
 
 export async function getCountries() {
     try {
-        const response = await fetch('http://localhost:8000/api/countries', {
+        const response = await fetch(url+'/api/countries', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',               
@@ -130,7 +132,7 @@ export async function getCountries() {
 
 export async function getGlobalStats() {
     try {
-        const response = await fetch('http://localhost:8000/api/stadistics', {
+        const response = await fetch(url+'/api/stadistics', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',               
@@ -146,7 +148,7 @@ export async function getGlobalStats() {
 
 export async function createStatsLog(data) {
     try {
-        const response = await fetch('http://localhost:8000/api/session/log', {
+        const response = await fetch(url+'/api/session/log', {
             method: 'POST',
             body: JSON.stringify(data),
             headers: {

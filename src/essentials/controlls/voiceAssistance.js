@@ -1,6 +1,5 @@
 import post from '../BackendMethods/Python/fetchMethods.js';
-import { saveData } from '../../scenes/levels/index.js';
-import { createLog } from '../../scenes/levels/index.js';
+import { saveData, createLog } from '../../main.js';
 
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 const SpeechGrammarList = window.SpeechGrammarList || window.webkitSpeechGrammarList;

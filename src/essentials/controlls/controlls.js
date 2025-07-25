@@ -2,7 +2,7 @@ import AddBlock from "../../essentials/mecanics/addBlocks.js";
 import RemoveBlock from "../../essentials/mecanics/removeBlocks.js";
 import { Vector3 } from 'three';
 import { detectDeviceType } from "../../tools/Device.js";
-import { saveData, getCollectables, createLog } from "../../scenes/levels/index.js";
+import { saveData, getCollectables, createLog } from "../../main.js";
 
 let item;
 let pressIzq = false;

@@ -1,4 +1,3 @@
-
 let trees = [];
 let tronco = [];
 
@@ -39,19 +38,12 @@ export function generateTrees(terrainPhp) {
         }
     }
 
-    /*
-    console.log("hojas");
-    console.log(JSON.stringify(trees, null, ""));
-    
-    console.info("troncos");
-    console.info(JSON.stringify(tronco, null, ""));
-    */
 }
-//export array trees
+
 export function getTrees() {
     return trees;
 }
-//export array tronco
+
 export function getTronco() {
     return tronco;
 }

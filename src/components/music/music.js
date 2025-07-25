@@ -2,7 +2,6 @@ import { AudioListener, Audio, AudioLoader } from 'three';
 
 const audioChanged = ['../../../public/sounds/track1.mp3', '../../../public/sounds/track2.mp3', '../../../public/sounds/track3.mp3', '../../../public/sounds/track4.mp3'];
 
-// Pin a random piece of audio to the player's camera
 export default function AudioPlayer(camera) {
     const listener = new AudioListener();
     camera.add(listener);

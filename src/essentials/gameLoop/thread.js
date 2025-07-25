@@ -1,7 +1,7 @@
-import { Vector3, Clock } from 'three';
+import { Vector3 } from 'three';
 import { moveDirection } from '../controlls/controlls';
-import { Vec3 } from 'cannon-es';
-import { setLevel, getLevel, increasefalls, levelsCompleted, updateCollectables, setScore } from '../../scenes/levels';
+import { getLevel, setLevel } from '../../scenes/index.js';
+import { increasefalls, levelsCompleted, updateCollectables, setScore } from "../../main.js";
 import { updateItemsStyle } from '../controlls/controlls'; 
 
 const isPortrait = window.matchMedia("(orientation: portrait)").matches;
@@ -19,11 +19,29 @@ if (isPortrait) {
     height = window.innerHeight * 50 / 100 < 200 ? 100 : 200;
     width = window.innerWidth * 20 / 100 < 200 ? 100 : 200;
 }
-//main thread, game logic, and increase world step
-function thread(camera, direction, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain, cameraLevel1, cameraLevel2, portalRenderTarget1, portalRenderTarget2, buildAdmin, portalLevel1, portalLevel2, raycasterCollitions, blockToPush, arboles, wall, wall2, cubeGravity, cubeGravity2, portalRenderTarget2Return, portalLevel2Return, portalCamera2Return, portalRenderTarget1Return, portalLevel1Return, portalCamera1Return, collectableWood, collectableStone) {
+
+function thread(camera, raycaster, playerBody, keys, world, playerMesh, minimap, cannonDebugger, renderer, canJump, scene, terrain,  buildAdmin, raycasterCollitions, blockToPush, arboles, wall, wall2, cubeGravity, cubeGravity2, collectableWood, collectableStone, portalObjects) {
+
+     const {
+        portalRenderTarget: portalRenderTarget1,
+        portalCamera: portalCamera1,
+        portalRenderTargetReturn: portalRenderTarget1Return,
+        portalCameraReturn: portalCamera1Return,
+        portalLevel: portalLevel1,
+        portalLevelReturn: portalLevel1Return,
+    } = portalObjects[0];
+
+    const {
+        portalRenderTarget: portalRenderTarget2,
+        portalCamera: portalCamera2,
+        portalRenderTargetReturn: portalRenderTarget2Return,
+        portalCameraReturn: portalCamera2Return,
+        portalLevel: portalLevel2,
+        portalLevelReturn: portalLevel2Return,
+    } = portalObjects[1];
 
     const animate = () => {
-        moveDirection(keys, playerBody, direction, camera);
+        moveDirection(keys, playerBody, new Vector3(), camera);
 
         raycaster.setFromCamera(new Vector3(0, 0, 0), camera);
         raycasterCollitions.setFromCamera(new Vector3(0, 0, 0), camera);
@@ -39,7 +57,7 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
         camera.position.y += .5;
 
         minimap.position.set(playerBody.position.x, playerBody.position.y + 60, playerBody.position.z);
-        //cannonDebugger.update();
+       // cannonDebugger.update();
         terrain.update();
         buildAdmin.update();
         blockToPush.update();
@@ -57,15 +75,15 @@ function thread(camera, direction, raycaster, playerBody, keys, world, playerMes
         portalCollitions(playerBody, [portalLevel1, portalLevel2, portalLevel2Return, portalLevel1Return], camera);
         level2Colitions(playerBody, [wall, wall2], [cubeGravity, cubeGravity2]);
 
-        rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, cameraLevel1, cameraLevel2, camera, portalRenderTarget2Return, portalCamera2Return, portalRenderTarget1Return, portalCamera1Return);
-        camerasAnimated([cameraLevel1, cameraLevel2]);
+        rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, portalCamera1, portalCamera2, camera, portalRenderTarget2Return, portalCamera2Return, portalRenderTarget1Return, portalCamera1Return);
+        camerasAnimated([portalCamera1, portalCamera2]);
 
         requestAnimationFrame(animate);
     };
     animate();
 }
 
-function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, cameraLevel1, cameraLevel2, camera, portalRenderTarget2Return, portalCamera2Return, portalRenderTarget1Return, portalCamera1Return) {
+function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, minimap, scene, portalCamera1, portalCamera2, camera, portalRenderTarget2Return, portalCamera2Return, portalRenderTarget1Return, portalCamera1Return) {
     //CubeCamera
     renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.render(scene, camera);
@@ -76,7 +94,7 @@ function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, min
     renderer.render(scene, minimap);
     //portal 
     renderer.setRenderTarget(portalRenderTarget1);
-    renderer.render(scene, cameraLevel1);
+    renderer.render(scene, portalCamera1);
     renderer.setRenderTarget(null);
     //portal 1 return
     renderer.setRenderTarget(portalRenderTarget1Return);
@@ -84,7 +102,7 @@ function rendererCameras(renderer, portalRenderTarget1, portalRenderTarget2, min
     renderer.setRenderTarget(null);
     //portal2
     renderer.setRenderTarget(portalRenderTarget2);
-    renderer.render(scene, cameraLevel2);
+    renderer.render(scene, portalCamera2);
     renderer.setRenderTarget(null);
     //portal 2 return
     renderer.setRenderTarget(portalRenderTarget2Return);

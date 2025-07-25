@@ -1,6 +1,5 @@
 import { Scene, TextureLoader, LinearMipMapLinearFilter } from 'three'
 
-//build and return a scene
 const scene = new Scene();
 
 const textureLoader = new TextureLoader();

@@ -1,7 +1,6 @@
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-//return a type of pointerLock or Orbital controls depending on the type of device
 export function DeviceController(camera, renderer) {
 
     let controls;

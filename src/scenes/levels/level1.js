@@ -1,10 +1,24 @@
+import Cube from "../../components/shapes/cube.js";
 import CubeMesh from "../../components/shapes/cubeMesh.js";
 import PlaneConstructor from "../../components/shapes/PlaneColitions.js";
-import Cube from "../../components/shapes/cube.js";
 
-//Build meshes of cubes and planes for the level's own structure, 
-//add the meshes to the scene and add the elements to the raycast for jump and construction collisions
-export function buildLevel1(world, scene, elements, blockToPush, collectableWood) {
+export function buildLevel1(world, scene, elements) {
+
+        const blockToPush = new CubeMesh(
+        [360, 60, 165],
+        "../../../public/textures/brick_black.png",
+        3,
+        world,
+        100,
+        1
+    );
+
+    const collectableWood = new Cube(
+        [341, 41, 165],
+        "../../../public/textures/g_5.png",
+        0.6,
+        0.6
+    );
 
     const floorLv1 = new PlaneConstructor([400, 48, 165], "../../../public/textures/stone.png", [0, 0, 0], [10, 10], world).getMesh();
     const inclinado = new PlaneConstructor([385, 46, 165], "../../../public/textures/stone.png", [0,0,0.1], [10, 10], world).getMesh();
@@ -22,4 +36,9 @@ export function buildLevel1(world, scene, elements, blockToPush, collectableWood
 
     scene.add(floorLv1, inclinado, c1, f3, f4, f5, c2, f6, f7, c3, c4, blockToPush.getMesh(), f8, collectableWood.getMesh());
     elements.push(floorLv1, inclinado, f3, c1, f4, f5, c2, f6, f7, c3, c4, blockToPush.getMesh(), f8);
+
+    return {
+        blockToPush,
+        collectableWood
+    };
 }
