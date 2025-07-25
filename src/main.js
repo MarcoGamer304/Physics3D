@@ -4,14 +4,15 @@ import {
   getStats,
   updateStats,
 } from "./essentials/BackendMethods/Php/fetchMethods";
-import { init } from "./scenes/index";
-import { timeToMilliseconds } from "./tools/parseTime";
+import { getLevel, init } from "./scenes/index";
+import { getMinutes, secondsToTime, timeToMilliseconds } from "./tools/parseTime";
 
 let score = Number(0);
 let blocksCollected = Number(1);
 let falls = Number(0);
 let totalTimePlayed = Number(0);
 let levels_completed = Number(0);
+let timePlayed = Number(0);
 
 let terrainPhp = [];
 let buildsAdminPhp = [];
@@ -50,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
             collectables = stats.collectables
               ? JSON.parse(stats.collectables)
               : [false, false, false, false, false, false, false];
+              timePlayed = Date.now();
           } catch (error) {
             console.error("Error to string a array:", error);
             newBlocksArray = [];
@@ -151,7 +153,7 @@ export async function createLog(state) {
     length: (Date.now() - timePlayed) / 1000,
     browser: navigator.userAgent,
     screen: screen.width + "x" + screen.height,
-    level: globalLevel,
+    level: getLevel(),
     has_closed_browser: state,
   });
 }
